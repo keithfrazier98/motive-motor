@@ -1,11 +1,70 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo200 from "../images/logo200.png";
+import "../App.css";
 import "./LoginScreen.css";
 import Header from "../common/Header";
 
 export default function LoginScreen() {
   const [showPassword, setShowPassword] = useState(false);
   const [inputType, setInputType] = useState("password");
+  const [themeId, setThemeId] = useState("bw");
+  const [theme, setTheme] = useState({
+    bkgd: "",
+    fontColor: "",
+    secBkgd: "",
+    btnColor: "",
+    headerBkgd: "",
+    navBkgd: "",
+    container: "",
+  });
+
+  useEffect(()=>{
+      handleThemeChange()
+  },[themeId])
+
+  const handleThemeChange = () => {
+      console.log(themeId)
+    switch (themeId) {
+      case "bw":
+          console.log("bw")
+        setTheme({
+          bkgd: "",
+          fontColor: "",
+          secBkgd: "",
+          btnColor: "",
+          headerBkgd: "",
+          navBkgd: "",
+          container: "",
+        });
+        break;
+      case "sunset":
+        console.log("sunset")
+
+        setTheme({
+          bkgd: "sunsetMainBkgd",
+          fontColor: "sunsetFont",
+          secBkgd: "sunsetSecBkgd",
+          btnColor: "sunsetButton",
+          headerBkgd: "sunsetHeader",
+          navBkgd: "sunsetNav",
+          container: "sunsetContainer",
+        });
+        break
+      case "forest":
+        console.log("forest")
+
+        setTheme({
+          bkgd: "forestMainBkgd",
+          fontColor: "forestFont",
+          secBkgd: "forestSecBkgd",
+          btnColor: "forestButton",
+          headerBkgd: "forestHeader",
+          navBkgd: "forestNav",
+          container: "forestContainer",
+        });
+        break
+    }
+  };
 
   const handleShowPassword = (event) => {
     event.preventDefault();
@@ -19,8 +78,8 @@ export default function LoginScreen() {
   };
 
   return (
-    <div className="grid-y" style={{ height: "100vh" }}>
-      <Header />
+    <div className={`grid-y ${theme.bkgd} ${theme.fontColor}`} style={{ height: "100vh" }}>
+      <Header themeId={themeId} setThemeId={setThemeId} theme={theme} />
       <div
         className="grid-x grid-margin-y align-center align-middle"
         style={{ height: "100%" }}
@@ -61,9 +120,9 @@ export default function LoginScreen() {
                       autoComplete="current-password"
                     />
                   </div>
-                  <div className="cell small-2">
+                  <div className={`cell small-2`}>
                     <button
-                      className="button secondary eye"
+                      className={`button secondary eye ${theme.btnColor}`}
                       onClick={handleShowPassword}
                     >
                       {showPassword ? (
@@ -73,12 +132,20 @@ export default function LoginScreen() {
                       )}
                     </button>
                   </div>
-                  <div className="cell small-3">
-                    <button className="button secondary" type="submit">
-                      login
-                    </button>
-                  </div>
                 </div>
+              </div>
+            </div>
+            <div className="grid-x grid-margin-x align-center text-center formButtons">
+              <div className="cell small-4">
+                <button className="button secondary" type="submit">
+                  login
+                </button>
+              </div>
+              <div className="cell small-4">
+                <button className="button secondary">new user</button>
+              </div>
+              <div className="cell small-4">
+                <button className="button secondary">guest</button>
               </div>
             </div>
           </form>

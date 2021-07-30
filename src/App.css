@@ -1,10 +1,70 @@
+*{
+    padding:0
+}
+
 :root{
     font-size: 18px;
 
 }
 
-*{
-    padding:0
+
+.sunsetMainBkgd{
+    background-color: #FFE57F;
+}
+
+.sunsetFont{
+    color: #69585F;
+}
+
+.sunsetButton{
+    background-color: #69585F;
+
+}
+
+.sunsetNav, .sunsetHeader{
+    color: #E88D67;
+}
+
+.sunsetSecBkgd{
+    background-color: #93E1D8;
+}
+
+.sunsetContainer{
+    background-color: #FFE57F
+}
+
+.sunsetButton:hover{
+    background-color: #d6c26f
+
+}
+
+.forestMainBkgd{
+    background-color: #8FBC94;
+}
+
+.forestFont{
+    color: #313B72;
+}
+
+.forestButton{
+    background-color: #313B72;
+
+}
+
+.forestNav, .forestHeader{
+    color: #F1E4E8;
+}
+
+.forestSecBkgd{
+    background-color: #FFAB66;
+}
+
+.forestContainer{
+    background-color: #C0D16F
+}
+
+.forestButton:hover{
+    background-color: #a3b15d
 }
 
 .grid-container{
