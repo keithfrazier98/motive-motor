@@ -1,25 +1,34 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../App.css";
 import "./Header.css";
 import logo200 from "../images/logo200.png";
 
-export default function Header({themeId, setThemeId, theme}) {
-
-  const handleTheme = (event) => {
-    event.preventDefault();
-    setThemeId(event.target.id);
-  };
+export default function Header({ theme, setThemeId, setLoading }) {
 
   return (
-    <div className={`grid-x align-right align-middle ${theme.navBkgd} ${theme.fontColor}`}>
+    <div
+      className={`grid-x align-right align-middle ${theme.fontColor}`}
+    >
       <div className="cell small-6 medium-9">
-        <button id="sunset" onClick={handleTheme} className="button themeBtn sunsetButton">
+        <button
+          id="sunset"
+          onClick={() => {setThemeId("sunset")}}
+          className="button themeBtn sunsetButton"
+        >
           <ion-icon name="sunny-outline"></ion-icon>
         </button>
-        <button id="forest" onClick={handleTheme} className="button themeBtn forestButton">
+        <button
+          id="forest"
+          onClick={()=>{setThemeId("forest")}}
+          className="button themeBtn forestButton"
+        >
           <ion-icon name="leaf-outline"></ion-icon>
         </button>
-        <button id="bw" onClick={handleTheme} className="hollow button secondary themeBtn">
+        <button
+          id="bw"
+          onClick={()=>{setThemeId("bw")}}
+          className="hollow button secondary themeBtn"
+        >
           <ion-icon name="contrast-outline"></ion-icon>
         </button>
       </div>
