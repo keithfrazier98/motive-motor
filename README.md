@@ -11,6 +11,7 @@ Front-end stack quick list
 - React
 - Jest 
 - Netlify
-- Frontier
+- Puppeteer
+- Foundation CSS
 - HTML/JSX 
 - CSS
