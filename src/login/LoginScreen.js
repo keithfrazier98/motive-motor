@@ -31,7 +31,7 @@ export default function LoginScreen() {
           bkgd: "",
           fontColor: "",
           secBkgd: "",
-          btnColor: "",
+          btnColor: "secondary",
           headerBkgd: "",
           navBkgd: "",
           container: "",
@@ -122,7 +122,7 @@ export default function LoginScreen() {
                   </div>
                   <div className={`cell small-2`}>
                     <button
-                      className={`button secondary eye ${theme.btnColor}`}
+                      className={`button eye ${theme.btnColor}`}
                       onClick={handleShowPassword}
                     >
                       {showPassword ? (
@@ -137,15 +137,15 @@ export default function LoginScreen() {
             </div>
             <div className="grid-x grid-margin-x align-center text-center formButtons">
               <div className="cell small-4">
-                <button className="button secondary" type="submit">
+                <button className={`button ${theme.btnColor}`} type="submit">
                   login
                 </button>
               </div>
               <div className="cell small-4">
-                <button className="button secondary">new user</button>
+                <button className={`button ${theme.btnColor}`}>new user</button>
               </div>
               <div className="cell small-4">
-                <button className="button secondary">guest</button>
+                <button className={`button ${theme.btnColor}`}>guest</button>
               </div>
             </div>
           </form>
