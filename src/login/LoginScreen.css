@@ -1,0 +1,23 @@
+ion-icon {
+    font-size: 2rem;
+  }
+
+.loginH2{
+    font-size: 3rem;
+    font-family: 'Lobster', cursive;
+}
+.loginForm{
+    margin: 20px 0 0 0;
+    font-family: 'Raleway', sans-serif;
+}
+
+.eye{
+    padding: 2px;
+    margin:8px 0 0 0;
+}
+
+@media all and (min-width:700px){
+    .loginH2{
+        font-size: 7rem;
+    }
+}

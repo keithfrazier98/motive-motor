@@ -1,0 +1,30 @@
+.headerH1{
+    font-size: 1rem;
+    font-family: 'Lobster', cursive;
+    margin: 0;
+
+}
+.headerSlogan{
+    margin: 0;
+    font-size: .75rem;
+    font-family: 'Lobster', cursive;
+}
+
+.headerLogo{
+    float: right;
+    width: 30px;
+}
+
+@media all and (min-width:700px){
+    .headerH1{
+        font-size: 2rem;
+    }
+
+    .headerSlogan{
+        font-size: 1rem;
+    }
+
+    .headerLogo{
+        width: 60px;
+    }
+}

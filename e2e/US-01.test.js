@@ -11,7 +11,7 @@ describe("App.js", () => {
 console.log(`testing ${BASE_URL}`)
 
     beforeAll(async () => {
-        browser = await puppeteer.launch()
+        browser = await puppeteer.launch({headless:false})
         page = await browser.newPage()
     })
 
