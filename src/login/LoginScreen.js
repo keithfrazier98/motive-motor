@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import logo200 from "../images/logo200.png";
 import "../App.css";
 import "./LoginScreen.css";
 import Header from "../common/Header";
+import logo200 from "../images/logo200.png";
+import googleSignInBtnNormal from "../google_signin_buttons/2x/btn_google_signin_light_normal_web@2x.png";
+import googleSignInBtnFocus from "../google_signin_buttons/2x/btn_google_signin_light_focus_web@2x.png";
 
 export default function LoginScreen() {
   const [showPassword, setShowPassword] = useState(false);
@@ -21,9 +23,7 @@ export default function LoginScreen() {
 
   useEffect(() => {
     setLoading(true);
-    handleThemeChange()
-    .then(createPageContent())
-    .then(setLoading(false));
+    handleThemeChange().then(createPageContent()).then(setLoading(false));
   }, [themeId]);
 
   const handleThemeChange = () => {
@@ -93,7 +93,7 @@ export default function LoginScreen() {
   const createPageContent = () => {
     return (
       <>
-        <Header setThemeId={setThemeId} theme={theme} setLoading={setLoading} />
+        <Header setThemeId={setThemeId} theme={theme} />
         <div
           className="grid-x grid-margin-y align-center align-middle"
           style={{ height: "100%" }}
@@ -149,19 +149,35 @@ export default function LoginScreen() {
                   </div>
                 </div>
               </div>
-              <div className="grid-x grid-margin-x align-center text-center formButtons">
+              <div className="grid-x grid-margin-x grid-margin-y align-center text-center formButtons">
                 <div className="cell small-4">
                   <button className={`button ${theme.btnColor}`} type="submit">
                     login
                   </button>
                 </div>
                 <div className="cell small-4">
-                  <button className={`button ${theme.btnColor}`}>
+                  <button className={`button ${theme.btnColor}`} type="submit">
                     new user
                   </button>
                 </div>
                 <div className="cell small-4">
-                  <button className={`button ${theme.btnColor}`}>guest</button>
+                  <button className={`button ${theme.btnColor}`} type="button">
+                    guest
+                  </button>
+                </div>
+                <div className="cell small-6">
+                  <div className="g-signin2" data-onsuccess="onSignIn"></div>
+                </div>
+                <div className="cell small-6">
+                  <div
+                    class="fb-login-button"
+                    data-width=""
+                    data-size="medium"
+                    data-button-type="login_with"
+                    data-layout="default"
+                    data-auto-logout-link="false"
+                    data-use-continue-as="false"
+                  ></div>
                 </div>
               </div>
             </form>
@@ -171,7 +187,7 @@ export default function LoginScreen() {
     );
   };
 
-  let pageContent = createPageContent()
+  let pageContent = createPageContent();
   return (
     <div
       className={`grid-y ${theme.bkgd} ${theme.fontColor}`}

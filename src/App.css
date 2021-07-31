@@ -33,7 +33,7 @@
     background-color: #FFE57F
 }
 
-.sunsetButton:hover{
+.sunsetButton:hover, .sunsetButton:active, .sunsetButton:visited, .sunsetButton:focus{
     background-color: #d6c26f
 
 }
@@ -63,7 +63,7 @@
     background-color: #C0D16F
 }
 
-.forestButton:hover{
+.forestButton:hover, .forestButton:active, .forestButton:visited, .forestButton:focus{
     background-color: #a3b15d
 }
 

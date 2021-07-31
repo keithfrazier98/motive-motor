@@ -20,6 +20,14 @@
       href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300&display=swap"
       rel="stylesheet"
     />
+
+    <!--Google Sign In-->
+    <meta
+      name="google-signin-client_id"
+      content="659209002109-g9b7na56k40o4a8dvfs1nim8sg4e3qo5.apps.googleusercontent.com"
+    />
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
     <!-- icons -->
     <script
       type="module"
@@ -68,6 +76,31 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+
+    <script>
+      window.fbAsyncInit = function () {
+        FB.init({
+          appId: "347020317025244",
+          cookie: true,
+          xfbml: true,
+          version: "v11.0",
+        });
+
+        FB.AppEvents.logPageView();
+      };
+
+      (function (d, s, id) {
+        var js,
+          fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+          return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      })(document, "script", "facebook-jssdk");
+    </script>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

@@ -16,7 +16,12 @@ ion-icon {
     margin:8px 0 0 0;
 }
 
-
+.google{
+    background: url(../google_signin_buttons/1x/btn_google_signin_light_normal_web.png);
+}
+.google:hover ,.google:focus{
+    background: url(../google_signin_buttons/1x/btn_google_signin_light_focus_web.png)
+}
 @media all and (min-width:700px){
     .loginH2{
         font-size: 7rem;
