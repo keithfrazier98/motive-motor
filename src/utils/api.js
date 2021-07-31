@@ -48,6 +48,10 @@ const API_BASE_URL = process.env.BASE_URL || 'http://localhost:5000'
 
 
  export async function isExistingUser(email, signal){
-    const url = `${API_BASE_URL}/login/${email}`;
-    fetchJson(url, {headers, signal}, [])
+    const url = `${API_BASE_URL}/logins/${email}`;
+    return await fetchJson(url, {headers, signal}, [])
  }
+
+export async function createNewUser(email, password, signal){
+  
+}

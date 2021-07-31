@@ -5,6 +5,7 @@ import {
   GoogleLoginButton,
 } from "react-social-login-buttons";
 import { isExistingUser } from "../utils/api.js";
+import ErrorMessage from "../common/ErrorMessage.js";
 import "../App.css";
 import "./LoginScreen.css";
 import Header from "../common/Header";
@@ -16,6 +17,7 @@ export default function LoginScreen() {
   const [inputType, setInputType] = useState("password");
   const [themeId, setThemeId] = useState("bw");
   const [loading, setLoading] = useState("false");
+  const [emailError, setEmailError] = useState("");
   const [theme, setTheme] = useState({
     bkgd: "",
     fontColor: "",
@@ -101,7 +103,9 @@ export default function LoginScreen() {
 
   const logout = () => {};
 
-  const checkForReturningUser = () => {};
+  const checkForReturningUser = () => {
+    isExistingUser(loginInfo.email).then(console.log).catch(setEmailError);
+  };
 
   const handleChange = ({ target: { id, value } }) => {
     setLoginInfo({ ...loginInfo, [id]: value });
@@ -109,9 +113,9 @@ export default function LoginScreen() {
 
   const submitLogin = (event) => {
     event.preventDefault();
-    isExistingUser(loginInfo.email).then(console.log)
+    checkForReturningUser();
   };
-  
+
   const createPageContent = () => {
     return (
       <>
@@ -128,7 +132,6 @@ export default function LoginScreen() {
             <form onSubmit={submitLogin} className="loginForm">
               <div className="grid-container">
                 <p>Let's get logged in:</p>
-
                 <div>
                   <div className="grid-x align-middle align-center grid-margin-x">
                     <div className="cell medium-12">
@@ -143,7 +146,6 @@ export default function LoginScreen() {
                         onChange={handleChange}
                       />
                     </div>
-
                     <div className="cell small-10">
                       <label for="password">Password:</label>
                       <input
@@ -174,6 +176,8 @@ export default function LoginScreen() {
                 </div>
               </div>
               <div className="grid-x grid-margin-x grid-margin-y align-center text-center formButtons">
+              <ErrorMessage error={emailError}/>
+
                 <div className="cell small-4">
                   <button className={`button ${theme.btnColor}`} type="submit">
                     login
@@ -205,7 +209,7 @@ export default function LoginScreen() {
                     onFailure={responseGoogle}
                     cookiePolicy={"single_host_origin"}
                     isSignedIn={true}
-                  />{" "}
+                  />
                 </div>
                 <div className="cell small-12">
                   <div
