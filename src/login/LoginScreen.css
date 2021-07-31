@@ -17,9 +17,10 @@ ion-icon {
 }
 
 .google{
+    border-radius: 6px;
     background: url(../google_signin_buttons/1x/btn_google_signin_light_normal_web.png);
 }
-.google:hover ,.google:focus{
+.google:hover{
     background: url(../google_signin_buttons/1x/btn_google_signin_light_focus_web.png)
 }
 @media all and (min-width:700px){

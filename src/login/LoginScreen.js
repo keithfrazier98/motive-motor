@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
+import { GoogleLogin, GoogleLogout } from "react-google-login";
+import {
+  FacebookLoginButton,
+  GoogleLoginButton,
+} from "react-social-login-buttons";
+import { isExistingUser } from "../utils/api.js";
 import "../App.css";
 import "./LoginScreen.css";
 import Header from "../common/Header";
 import logo200 from "../images/logo200.png";
-import googleSignInBtnNormal from "../google_signin_buttons/2x/btn_google_signin_light_normal_web@2x.png";
-import googleSignInBtnFocus from "../google_signin_buttons/2x/btn_google_signin_light_focus_web@2x.png";
 
 export default function LoginScreen() {
+  const [loginInfo, setLoginInfo] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [inputType, setInputType] = useState("password");
   const [themeId, setThemeId] = useState("bw");
@@ -77,7 +82,7 @@ export default function LoginScreen() {
     event.preventDefault();
     setShowPassword(!showPassword);
     console.log(inputType);
-    if (showPassword) {
+    if (!showPassword) {
       setInputType("text");
     } else {
       setInputType("password");
@@ -90,6 +95,23 @@ export default function LoginScreen() {
     </>
   );
 
+  const responseGoogle = (response) => {
+    console.log(response.email);
+  };
+
+  const logout = () => {};
+
+  const checkForReturningUser = () => {};
+
+  const handleChange = ({ target: { id, value } }) => {
+    setLoginInfo({ ...loginInfo, [id]: value });
+  };
+
+  const submitLogin = (event) => {
+    event.preventDefault();
+    isExistingUser(loginInfo.email).then(console.log)
+  };
+  
   const createPageContent = () => {
     return (
       <>
@@ -103,21 +125,22 @@ export default function LoginScreen() {
               <h2 className="loginH2">Welcome!</h2>
               <img src={logo200} alt="motive-motor-logo" width="150px" />
             </div>
-            <form className="loginForm">
+            <form onSubmit={submitLogin} className="loginForm">
               <div className="grid-container">
                 <p>Let's get logged in:</p>
 
                 <div>
                   <div className="grid-x align-middle align-center grid-margin-x">
                     <div className="cell medium-12">
-                      <label for="username">Username:</label>
+                      <label for="username">Email:</label>
                       <input
-                        id="username"
-                        name="username"
+                        id="email"
+                        name="email"
                         type="email"
                         placeholder="johndoe@email.com"
                         required
-                        height="2.5rem"
+                        value={loginInfo.email}
+                        onChange={handleChange}
                       />
                     </div>
 
@@ -129,9 +152,10 @@ export default function LoginScreen() {
                         type={inputType}
                         placeholder="password"
                         required
-                        height="2.5rem"
                         minLength="8"
                         autoComplete="current-password"
+                        value={loginInfo.password}
+                        onChange={handleChange}
                       />
                     </div>
                     <div className={`cell small-2`}>
@@ -165,19 +189,41 @@ export default function LoginScreen() {
                     guest
                   </button>
                 </div>
-                <div className="cell small-6">
-                  <div className="g-signin2" data-onsuccess="onSignIn"></div>
+                <div className="cell small-12">
+                  <GoogleLogin
+                    clientId="659209002109-g9b7na56k40o4a8dvfs1nim8sg4e3qo5.apps.googleusercontent.com"
+                    render={(renderProps) => (
+                      <button
+                        onClick={renderProps.onClick}
+                        disabled={renderProps.disabled}
+                      >
+                        <GoogleLoginButton />
+                      </button>
+                    )}
+                    buttonText="Login"
+                    onSuccess={responseGoogle}
+                    onFailure={responseGoogle}
+                    cookiePolicy={"single_host_origin"}
+                    isSignedIn={true}
+                  />{" "}
                 </div>
-                <div className="cell small-6">
+                <div className="cell small-12">
                   <div
                     class="fb-login-button"
                     data-width=""
-                    data-size="medium"
+                    data-size="large"
                     data-button-type="login_with"
                     data-layout="default"
-                    data-auto-logout-link="false"
+                    data-auto-logout-link="true"
                     data-use-continue-as="false"
                   ></div>
+                </div>
+                <div>
+                  <GoogleLogout
+                    clientId="659209002109-g9b7na56k40o4a8dvfs1nim8sg4e3qo5.apps.googleusercontent.com"
+                    buttonText="Logout"
+                    onLogoutSuccess={logout}
+                  ></GoogleLogout>
                 </div>
               </div>
             </form>
@@ -191,7 +237,7 @@ export default function LoginScreen() {
   return (
     <div
       className={`grid-y ${theme.bkgd} ${theme.fontColor}`}
-      style={{ height: "100vh" }}
+      style={{ height: "100%" }}
     >
       {loading ? loadingContent : pageContent}
     </div>
