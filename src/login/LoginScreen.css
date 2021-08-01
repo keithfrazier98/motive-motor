@@ -16,6 +16,26 @@ ion-icon {
     margin:8px 0 0 0;
 }
 
+@keyframes fadeIn{
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
+
+@keyframes fadeOut{
+    100% {opacity:0;}
+    0% {opacity:1;}
+}
+
+
+
+.fadeIn{
+    animation: fadeIn 2s
+}
+
+.fadeOut{
+    animation: fadeOut 2s;
+}
+
 .google{
     border-radius: 6px;
     background: url(../google_signin_buttons/1x/btn_google_signin_light_normal_web.png);

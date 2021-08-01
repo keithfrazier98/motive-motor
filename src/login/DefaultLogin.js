@@ -1,44 +1,44 @@
 import React, { useEffect, useState } from "react";
-import { GoogleLogin, GoogleLogout } from "react-google-login";
-import {
-  FacebookLoginButton,
-  GoogleLoginButton,
-} from "react-social-login-buttons";
 import { isExistingUser } from "../utils/api.js";
 import ErrorMessage from "../common/ErrorMessage.js";
+import ReturningUserMessage from "./ReturningUserMessage";
 import "../App.css";
 import "./LoginScreen.css";
 import Header from "../common/Header";
 import logo200 from "../images/logo200.png";
+import LogInWithSocialMedia from "./LoginWithSocialMedia.js";
 
-export default function LoginScreen() {
-  const [loginInfo, setLoginInfo] = useState({ email: "", password: "" });
-  const [showPassword, setShowPassword] = useState(false);
-  const [inputType, setInputType] = useState("password");
-  const [themeId, setThemeId] = useState("bw");
-  const [loading, setLoading] = useState("false");
-  const [emailError, setEmailError] = useState("");
-  const [theme, setTheme] = useState({
-    bkgd: "",
-    fontColor: "",
-    secBkgd: "",
-    btnColor: "",
-    headerBkgd: "",
-    navBkgd: "",
-    container: "",
-  });
+function DefaultLogin({
+  loginFormInfo,
+  setLoginFormInfo,
+  returningUserIsValidated,
+  setReturningUserIsValidated,
+  showPassword,
+  setShowPassword,
+  inputType,
+  setInputType,
+  themeId,
+  setThemeId,
+  loading,
+  setLoading,
+  emailError,
+  setEmailError,
+  theme,
+  setTheme,
+  setLoginType
+}) {
+
+  const [routeToLogin, setRouteToLogin] = useState(false)
 
   useEffect(() => {
     setLoading(true);
     handleThemeChange().then(createPageContent()).then(setLoading(false));
-  }, [themeId]);
+  }, [themeId, setLoading]);
 
   const handleThemeChange = () => {
     return new Promise((res) => {
-      console.log(themeId);
       switch (themeId) {
         case "bw":
-          console.log("bw");
           setTheme({
             bkgd: "",
             fontColor: "",
@@ -50,7 +50,6 @@ export default function LoginScreen() {
           });
           break;
         case "sunset":
-          console.log("sunset");
           setTheme({
             bkgd: "sunsetMainBkgd",
             fontColor: "sunsetFont",
@@ -62,7 +61,6 @@ export default function LoginScreen() {
           });
           break;
         case "forest":
-          console.log("forest");
           setTheme({
             bkgd: "forestMainBkgd",
             fontColor: "forestFont",
@@ -74,7 +72,6 @@ export default function LoginScreen() {
           });
           break;
         default:
-          console.log(theme);
           break;
       }
     });
@@ -83,7 +80,6 @@ export default function LoginScreen() {
   const handleShowPassword = (event) => {
     event.preventDefault();
     setShowPassword(!showPassword);
-    console.log(inputType);
     if (!showPassword) {
       setInputType("text");
     } else {
@@ -91,29 +87,42 @@ export default function LoginScreen() {
     }
   };
 
-  const loadingContent = (
-    <>
-      <h4>Loading ...</h4>
-    </>
-  );
-
-  const responseGoogle = (response) => {
-    console.log(response.email);
-  };
-
-  const logout = () => {};
-
-  const checkForReturningUser = () => {
-    isExistingUser(loginInfo.email).then(console.log).catch(setEmailError);
+  async function checkForReturningUser(submitType){
+    await isExistingUser(loginFormInfo.email)
+      .then((response) => {
+        if (response.password === loginFormInfo.password && submitType === "existing" ) {
+          setReturningUserIsValidated(true);
+        } else if (response.password === loginFormInfo.password && submitType === "new") {
+          setRouteToLogin(true)
+        }
+      })
+      .catch(setEmailError);
   };
 
   const handleChange = ({ target: { id, value } }) => {
-    setLoginInfo({ ...loginInfo, [id]: value });
+    setLoginFormInfo({ ...loginFormInfo, [id]: value });
   };
+
 
   const submitLogin = (event) => {
     event.preventDefault();
-    checkForReturningUser();
+      console.log(event.target.id)
+    switch (event.target.id) {
+      case "new":
+        checkForReturningUser("new");
+        break;
+
+      default:
+        checkForReturningUser("existing");
+        break;
+    }
+  };
+
+  const newUser = (event) => {
+    if(window.confirm("Would you like to create a new account with this email and password?")){
+      setLoading(true)
+      setLoginType("new")
+    }
   };
 
   const createPageContent = () => {
@@ -135,19 +144,19 @@ export default function LoginScreen() {
                 <div>
                   <div className="grid-x align-middle align-center grid-margin-x">
                     <div className="cell medium-12">
-                      <label for="username">Email:</label>
+                      <label htmlFor="username">Email:</label>
                       <input
                         id="email"
                         name="email"
                         type="email"
                         placeholder="johndoe@email.com"
                         required
-                        value={loginInfo.email}
+                        value={loginFormInfo.email}
                         onChange={handleChange}
                       />
                     </div>
                     <div className="cell small-10">
-                      <label for="password">Password:</label>
+                      <label htmlFor="password">Password:</label>
                       <input
                         id="password"
                         name="password"
@@ -156,7 +165,7 @@ export default function LoginScreen() {
                         required
                         minLength="8"
                         autoComplete="current-password"
-                        value={loginInfo.password}
+                        value={loginFormInfo.password}
                         onChange={handleChange}
                       />
                     </div>
@@ -176,59 +185,39 @@ export default function LoginScreen() {
                 </div>
               </div>
               <div className="grid-x grid-margin-x grid-margin-y align-center text-center formButtons">
-              <ErrorMessage error={emailError}/>
-
+                <ErrorMessage error={emailError} />
+                {routeToLogin ? (
+                  <ReturningUserMessage setReturningUserIsValidated={setReturningUserIsValidated}/>
+                ) : null}
                 <div className="cell small-4">
-                  <button className={`button ${theme.btnColor}`} type="submit">
+                  <button
+                    className={`button ${theme.btnColor}`}
+                    id="existing"
+                    type="submit"
+                  >
                     login
                   </button>
                 </div>
                 <div className="cell small-4">
-                  <button className={`button ${theme.btnColor}`} type="submit">
+                  <button
+                    className={`button ${theme.btnColor}`}
+                    id="new"
+                    type="button"
+                    onClick={submitLogin}
+                  >
                     new user
                   </button>
                 </div>
                 <div className="cell small-4">
-                  <button className={`button ${theme.btnColor}`} type="button">
+                  <button
+                    className={`button ${theme.btnColor}`}
+                    id="guest"
+                    type="button"
+                  >
                     guest
                   </button>
                 </div>
-                <div className="cell small-12">
-                  <GoogleLogin
-                    clientId="659209002109-g9b7na56k40o4a8dvfs1nim8sg4e3qo5.apps.googleusercontent.com"
-                    render={(renderProps) => (
-                      <button
-                        onClick={renderProps.onClick}
-                        disabled={renderProps.disabled}
-                      >
-                        <GoogleLoginButton />
-                      </button>
-                    )}
-                    buttonText="Login"
-                    onSuccess={responseGoogle}
-                    onFailure={responseGoogle}
-                    cookiePolicy={"single_host_origin"}
-                    isSignedIn={true}
-                  />
-                </div>
-                <div className="cell small-12">
-                  <div
-                    class="fb-login-button"
-                    data-width=""
-                    data-size="large"
-                    data-button-type="login_with"
-                    data-layout="default"
-                    data-auto-logout-link="true"
-                    data-use-continue-as="false"
-                  ></div>
-                </div>
-                <div>
-                  <GoogleLogout
-                    clientId="659209002109-g9b7na56k40o4a8dvfs1nim8sg4e3qo5.apps.googleusercontent.com"
-                    buttonText="Logout"
-                    onLogoutSuccess={logout}
-                  ></GoogleLogout>
-                </div>
+                <LogInWithSocialMedia />
               </div>
             </form>
           </div>
@@ -243,7 +232,9 @@ export default function LoginScreen() {
       className={`grid-y ${theme.bkgd} ${theme.fontColor}`}
       style={{ height: "100%" }}
     >
-      {loading ? loadingContent : pageContent}
+      {loading ? <h4>Loading ...</h4> : pageContent}
     </div>
   );
 }
+
+export default DefaultLogin;
