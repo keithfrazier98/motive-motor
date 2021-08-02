@@ -1,8 +1,19 @@
 import React from "react";
 
-function ReturningUserMessage ({returningUserIsValidated, setReturningUserIsValidated}){
+function ReturningUserMessage ({returningUserIsValidated, setReturningUserIsValidated, setLoginType, setLoading}){
     let transition = "fadeIn";
     //returningUserIsValidated ? (transition = "fadeIn") : (transition = "fadeOut");
+
+    const newUser = (event) => {
+      if (
+        window.confirm(
+          "Would you like to create a new account with this email and password?"
+        )
+      ) {
+        setLoading(true);
+        setLoginType("new");
+      }
+    };
 
     return (
       <div className = "cell small-12">
@@ -28,6 +39,7 @@ function ReturningUserMessage ({returningUserIsValidated, setReturningUserIsVali
               className="hollow button secondary"
               type="button"
               style={{ margin: "0 0 0 10px" }}
+              onClick={newUser}
             >
               No!
             </button>

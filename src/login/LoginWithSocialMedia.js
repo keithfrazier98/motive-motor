@@ -1,8 +1,6 @@
 import React from "react";
 import { GoogleLogin, GoogleLogout } from "react-google-login";
-import {
-  GoogleLoginButton,
-} from "react-social-login-buttons";
+import { GoogleLoginButton } from "react-social-login-buttons";
 
 function LogInWithSocialMedia() {
   const logout = () => {};
@@ -16,10 +14,10 @@ function LogInWithSocialMedia() {
         <GoogleLogin
           clientId="659209002109-g9b7na56k40o4a8dvfs1nim8sg4e3qo5.apps.googleusercontent.com"
           render={(renderProps) => (
-              <GoogleLoginButton
-                onClick={renderProps.onClick}
-                disabled={renderProps.disabled}
-              />
+            <GoogleLoginButton
+              onClick={renderProps.onClick}
+              disabled={renderProps.disabled}
+            />
           )}
           buttonText="Login"
           onSuccess={responseGoogle}

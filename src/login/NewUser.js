@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
-function NewUser () {
+function NewUser ({setLoading}) {
+
+    useEffect(()=> {
+        setLoading(false)
+    },[])
 
     return(
         <div>lets make a new user</div>

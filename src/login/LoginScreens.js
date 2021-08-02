@@ -10,7 +10,8 @@ function LoginScreens() {
     email: "",
     password: "",
   });
-  const [returningUserIsValidated, setReturningUserIsValidated] = useState(false);
+  const [returningUserIsValidated, setReturningUserIsValidated] =
+    useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [inputType, setInputType] = useState("password");
   const [themeId, setThemeId] = useState("bw");
@@ -26,49 +27,50 @@ function LoginScreens() {
     container: "",
   });
   const [loginType, setLoginType] = useState("default");
+  const [socialMediaLoginData, setSocialMediaLoginData] = useState({
+    socialMediaType: "",
+    data: "",
+  });
 
-  const history = useHistory()
+  const history = useHistory();
   useEffect(() => {
-
-
-    if(returningUserIsValidated === true && loginFormInfo){
-      history.push('./dashboard')
+    if (returningUserIsValidated === true && loginFormInfo) {
+      history.push("./dashboard");
     }
 
-    console.log(returningUserIsValidated, loginFormInfo)
+    console.log(returningUserIsValidated, loginFormInfo);
     //returningUserIsValidated changes to true:
     //dashboard page is push to history with query params: email
     //dashboard page makes api request for user information
-
-
   }, [returningUserIsValidated, loginFormInfo]);
-
 
   return (
     <>
       {loginType === "default" ? (
-          <DefaultLogin
-            loginFormInfo={loginFormInfo}
-            setLoginFormInfo={setLoginFormInfo}
-            returningUserIsValidated={returningUserIsValidated}
-            setReturningUserIsValidated={setReturningUserIsValidated}
-            showPassword={showPassword}
-            setShowPassword={setShowPassword}
-            inputType={inputType}
-            setInputType={setInputType}
-            themeId={themeId}
-            setThemeId={setThemeId}
-            loading={loading}
-            setLoading={setLoading}
-            emailError={emailError}
-            setEmailError={setEmailError}
-            theme={theme}
-            setTheme={setTheme}
-            loginType={loginType}
-            setLoginType={setLoginType}
-          />
+        <DefaultLogin
+          loginFormInfo={loginFormInfo}
+          setLoginFormInfo={setLoginFormInfo}
+          returningUserIsValidated={returningUserIsValidated}
+          setReturningUserIsValidated={setReturningUserIsValidated}
+          showPassword={showPassword}
+          setShowPassword={setShowPassword}
+          inputType={inputType}
+          setInputType={setInputType}
+          themeId={themeId}
+          setThemeId={setThemeId}
+          loading={loading}
+          setLoading={setLoading}
+          emailError={emailError}
+          setEmailError={setEmailError}
+          theme={theme}
+          setTheme={setTheme}
+          loginType={loginType}
+          setLoginType={setLoginType}
+          socialMediaLoginData={socialMediaLoginData}
+          setSocialMediaLoginData={setSocialMediaLoginData}
+        />
       ) : loginType === "new" ? (
-        <NewUser />
+        <NewUser setLoading={setLoading}/>
       ) : loginType === "guest" ? (
         <Guest />
       ) : (

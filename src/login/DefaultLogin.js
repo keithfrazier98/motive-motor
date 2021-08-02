@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { isExistingUser } from "../utils/api.js";
 import ErrorMessage from "../common/ErrorMessage.js";
 import ReturningUserMessage from "./ReturningUserMessage";
+import DefaultLoginBtns from "./DefaultLoginBtns.js";
 import "../App.css";
 import "./LoginScreen.css";
 import Header from "../common/Header";
@@ -25,10 +26,13 @@ function DefaultLogin({
   setEmailError,
   theme,
   setTheme,
-  setLoginType
+  loginType,
+  setLoginType,
+  socialMediaLoginData,
+  setSocialMediaLoginData
 }) {
-
-  const [routeToLogin, setRouteToLogin] = useState(false)
+  const [routeToLogin, setRouteToLogin] = useState(false);
+  const [sumbitNewUser, setSubmitNewUser] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -87,43 +91,43 @@ function DefaultLogin({
     }
   };
 
-  async function checkForReturningUser(submitType){
-    await isExistingUser(loginFormInfo.email)
-      .then((response) => {
-        if (response.password === loginFormInfo.password && submitType === "existing" ) {
-          setReturningUserIsValidated(true);
-        } else if (response.password === loginFormInfo.password && submitType === "new") {
-          setRouteToLogin(true)
-        }
-      })
-      .catch(setEmailError);
-  };
-
   const handleChange = ({ target: { id, value } }) => {
     setLoginFormInfo({ ...loginFormInfo, [id]: value });
   };
 
 
+  async function checkForReturningUser(submitType) {
+    await isExistingUser(loginFormInfo.email)
+      .then((response) => {
+        if (
+          response.password === loginFormInfo.password &&
+          submitType === "existing"
+        ) {
+          setReturningUserIsValidated(true);
+        } else if (
+          response.password === loginFormInfo.password &&
+          submitType === "new"
+        ) {
+          setRouteToLogin(true);
+        }
+      })
+      .catch(setEmailError);
+  }
+
   const submitLogin = (event) => {
-    event.preventDefault();
-      console.log(event.target.id)
-    switch (event.target.id) {
-      case "new":
-        checkForReturningUser("new");
-        break;
-
-      default:
-        checkForReturningUser("existing");
-        break;
+    if (event) {
+      event.preventDefault()
+      checkForReturningUser("existing");
+    } else {
+      checkForReturningUser("new");
     }
   };
 
-  const newUser = (event) => {
-    if(window.confirm("Would you like to create a new account with this email and password?")){
-      setLoading(true)
-      setLoginType("new")
+  useEffect(() => {
+    if(sumbitNewUser){
+      submitLogin();
     }
-  };
+  }, [sumbitNewUser]);
 
   const createPageContent = () => {
     return (
@@ -187,36 +191,24 @@ function DefaultLogin({
               <div className="grid-x grid-margin-x grid-margin-y align-center text-center formButtons">
                 <ErrorMessage error={emailError} />
                 {routeToLogin ? (
-                  <ReturningUserMessage setReturningUserIsValidated={setReturningUserIsValidated}/>
+                  <ReturningUserMessage
+                    setReturningUserIsValidated={setReturningUserIsValidated}
+                    setLoginType={setLoginType}
+                    setLoading={setLoading}
+                  />
                 ) : null}
-                <div className="cell small-4">
-                  <button
-                    className={`button ${theme.btnColor}`}
-                    id="existing"
-                    type="submit"
-                  >
-                    login
-                  </button>
-                </div>
-                <div className="cell small-4">
-                  <button
-                    className={`button ${theme.btnColor}`}
-                    id="new"
-                    type="button"
-                    onClick={submitLogin}
-                  >
-                    new user
-                  </button>
-                </div>
-                <div className="cell small-4">
-                  <button
-                    className={`button ${theme.btnColor}`}
-                    id="guest"
-                    type="button"
-                  >
-                    guest
-                  </button>
-                </div>
+                {loginType === "default" ? (
+                  <DefaultLoginBtns
+                    theme={theme}
+                    isExistingUser={isExistingUser}
+                    loginFormInfo={loginFormInfo}
+                    setEmailError={setEmailError}
+                    setReturningUserIsValidated={setReturningUserIsValidated}
+                    setRouteToLogin={setRouteToLogin}
+                    setSubmitNewUser={setSubmitNewUser}
+                    setLoginType={setLoginType}
+                  />
+                ) : null}
                 <LogInWithSocialMedia />
               </div>
             </form>
