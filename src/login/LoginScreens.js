@@ -37,11 +37,6 @@ function LoginScreens() {
     if (returningUserIsValidated === true && loginFormInfo) {
       history.push("./dashboard");
     }
-
-    console.log(returningUserIsValidated, loginFormInfo);
-    //returningUserIsValidated changes to true:
-    //dashboard page is push to history with query params: email
-    //dashboard page makes api request for user information
   }, [returningUserIsValidated, loginFormInfo]);
 
   return (

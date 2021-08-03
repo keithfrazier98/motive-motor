@@ -1,13 +1,27 @@
 import React from "react";
 import { GoogleLogin, GoogleLogout } from "react-google-login";
-import { GoogleLoginButton } from "react-social-login-buttons";
+import {
+  GoogleLoginButton,
+  FacebookLoginButton,
+} from "react-social-login-buttons";
+import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 
-function LogInWithSocialMedia() {
+function LogInWithSocialMedia({
+  setSocialMediaLoginData,
+  setReturningUserIsValidated,
+}) {
   const logout = () => {};
 
   const responseGoogle = (response) => {
-    console.log(response.email);
+    setSocialMediaLoginData(response.profileObj);
+    setReturningUserIsValidated(true);
   };
+
+  const responseFacebook = (response) => {
+    setSocialMediaLoginData(response);
+    setReturningUserIsValidated(true);
+  };
+
   return (
     <>
       <div className="cell small-12">
@@ -26,17 +40,19 @@ function LogInWithSocialMedia() {
           isSignedIn={true}
         />
       </div>
-      <div className="cell small-12">
-        <div
-          className="fb-login-button"
-          data-width=""
-          data-size="large"
-          data-button-type="login_with"
-          data-layout="default"
-          data-auto-logout-link="true"
-          data-use-continue-as="false"
-        ></div>
-      </div>
+      <div className="cell small-w"><FacebookLogin
+        appId="244836170795402"
+        autoLoad={true}
+        fields="name,email,picture"
+        callback={responseFacebook}
+        render={(renderProps) => (
+          <FacebookLoginButton
+            onClick={renderProps.onClick}
+            disabled={renderProps.disabled}
+          />
+        )}
+      /></div>
+      
       <div>
         <GoogleLogout
           clientId="659209002109-g9b7na56k40o4a8dvfs1nim8sg4e3qo5.apps.googleusercontent.com"

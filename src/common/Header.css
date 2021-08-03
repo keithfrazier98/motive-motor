@@ -20,6 +20,7 @@
   width: 30px;
 }
 
+
 @media all and (min-width: 700px) {
   .themeBtn {
     font-size: 1em;

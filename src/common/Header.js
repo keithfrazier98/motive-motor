@@ -4,6 +4,7 @@ import "./Header.css";
 import logo200 from "../images/logo200.png";
 
 export default function Header({ theme, setThemeId }) {
+  const roundedCorners = {borderRadius:"3px"}
 
   return (
     <div
@@ -14,6 +15,7 @@ export default function Header({ theme, setThemeId }) {
           id="sunset"
           onClick={() => {setThemeId("sunset")}}
           className="button themeBtn sunsetButton"
+          style={roundedCorners}
         >
           <ion-icon name="sunny-outline"></ion-icon>
         </button>
@@ -21,6 +23,8 @@ export default function Header({ theme, setThemeId }) {
           id="forest"
           onClick={()=>{setThemeId("forest")}}
           className="button themeBtn forestButton"
+          style={roundedCorners}
+
         >
           <ion-icon name="leaf-outline"></ion-icon>
         </button>
@@ -28,6 +32,8 @@ export default function Header({ theme, setThemeId }) {
           id="bw"
           onClick={()=>{setThemeId("bw")}}
           className="hollow button secondary themeBtn"
+          style={roundedCorners}
+
         >
           <ion-icon name="contrast-outline"></ion-icon>
         </button>

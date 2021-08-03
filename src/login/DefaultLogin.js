@@ -33,6 +33,7 @@ function DefaultLogin({
 }) {
   const [routeToLogin, setRouteToLogin] = useState(false);
   const [sumbitNewUser, setSubmitNewUser] = useState(false);
+  const roundedCorners = {borderRadius:"3px"}
 
   useEffect(() => {
     setLoading(true);
@@ -177,6 +178,7 @@ function DefaultLogin({
                       <button
                         className={`button eye ${theme.btnColor}`}
                         onClick={handleShowPassword}
+                        style={roundedCorners}
                       >
                         {showPassword ? (
                           <ion-icon name="eye-off"></ion-icon>
@@ -209,7 +211,7 @@ function DefaultLogin({
                     setLoginType={setLoginType}
                   />
                 ) : null}
-                <LogInWithSocialMedia />
+                <LogInWithSocialMedia setSocialMediaLoginData = {setSocialMediaLoginData} setReturningUserIsValidated={setReturningUserIsValidated} />
               </div>
             </form>
           </div>

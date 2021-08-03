@@ -11,6 +11,10 @@ ion-icon {
     font-family: 'Raleway', sans-serif;
 }
 
+button{
+    border-radius: 3px;
+}
+
 .eye{
     padding: 2px;
     margin:8px 0 0 0;
