@@ -3,6 +3,7 @@ import { isExistingUser } from "../utils/api.js";
 import ErrorMessage from "../common/ErrorMessage.js";
 import ReturningUserMessage from "./ReturningUserMessage";
 import DefaultLoginBtns from "./DefaultLoginBtns.js";
+import NewUser from "./NewUser.js";
 import "../App.css";
 import "./LoginScreen.css";
 import Header from "../common/Header";
@@ -16,8 +17,8 @@ function DefaultLogin({
   setReturningUserIsValidated,
   showPassword,
   setShowPassword,
-  inputType,
-  setInputType,
+  passwordInputType,
+  setPasswordInputType,
   themeId,
   setThemeId,
   loading,
@@ -29,11 +30,17 @@ function DefaultLogin({
   loginType,
   setLoginType,
   socialMediaLoginData,
-  setSocialMediaLoginData
+  setSocialMediaLoginData,
+  loggedIn,
+  setLoggedIn,
+  newUserPreferences,
+  setNewUserPreferences,
+  newUserProfileInfo,
+  setNewUserProfileInfo,
 }) {
   const [routeToLogin, setRouteToLogin] = useState(false);
   const [sumbitNewUser, setSubmitNewUser] = useState(false);
-  const roundedCorners = {borderRadius:"3px"}
+  const roundedCorners = { borderRadius: "3px" };
 
   useEffect(() => {
     setLoading(true);
@@ -86,16 +93,15 @@ function DefaultLogin({
     event.preventDefault();
     setShowPassword(!showPassword);
     if (!showPassword) {
-      setInputType("text");
+      setPasswordInputType("text");
     } else {
-      setInputType("password");
+      setPasswordInputType("password");
     }
   };
 
-  const handleChange = ({ target: { id, value } }) => {
+  function handleChange ({ target: { id, value } }) {
     setLoginFormInfo({ ...loginFormInfo, [id]: value });
   };
-
 
   async function checkForReturningUser(submitType) {
     await isExistingUser(loginFormInfo.email)
@@ -105,6 +111,7 @@ function DefaultLogin({
           submitType === "existing"
         ) {
           setReturningUserIsValidated(true);
+          setLoggedIn(true);
         } else if (
           response.password === loginFormInfo.password &&
           submitType === "new"
@@ -112,12 +119,21 @@ function DefaultLogin({
           setRouteToLogin(true);
         }
       })
-      .catch(setEmailError);
+      .catch((res)=> {
+
+        if(submitType !== "new"){
+          setEmailError(res)
+        } else { 
+          setLoginType("new")
+          
+        }
+
+      });
   }
 
   const submitLogin = (event) => {
     if (event) {
-      event.preventDefault()
+      event.preventDefault();
       checkForReturningUser("existing");
     } else {
       checkForReturningUser("new");
@@ -125,7 +141,7 @@ function DefaultLogin({
   };
 
   useEffect(() => {
-    if(sumbitNewUser){
+    if (sumbitNewUser) {
       submitLogin();
     }
   }, [sumbitNewUser]);
@@ -154,7 +170,7 @@ function DefaultLogin({
                         id="email"
                         name="email"
                         type="email"
-                        placeholder="johndoe@email.com"
+                        placeholder="rickyBobby@email.com"
                         required
                         value={loginFormInfo.email}
                         onChange={handleChange}
@@ -165,7 +181,7 @@ function DefaultLogin({
                       <input
                         id="password"
                         name="password"
-                        type={inputType}
+                        type={passwordInputType}
                         placeholder="password"
                         required
                         minLength="8"
@@ -197,21 +213,36 @@ function DefaultLogin({
                     setReturningUserIsValidated={setReturningUserIsValidated}
                     setLoginType={setLoginType}
                     setLoading={setLoading}
+                    setLoggedIn={setLoggedIn}
                   />
                 ) : null}
                 {loginType === "default" ? (
-                  <DefaultLoginBtns
-                    theme={theme}
-                    isExistingUser={isExistingUser}
+                  <>
+                    <DefaultLoginBtns
+                      theme={theme}
+                      setSubmitNewUser={setSubmitNewUser}
+                      setLoginType={setLoginType}
+                    />
+                    <LogInWithSocialMedia
+                      setSocialMediaLoginData={setSocialMediaLoginData}
+                      setReturningUserIsValidated={setReturningUserIsValidated}
+                    />
+                  </>
+                ) : loginType === "new" ? (
+                  <NewUser
+                    loading={loading}
+                    setLoading={setLoading}
                     loginFormInfo={loginFormInfo}
-                    setEmailError={setEmailError}
-                    setReturningUserIsValidated={setReturningUserIsValidated}
-                    setRouteToLogin={setRouteToLogin}
-                    setSubmitNewUser={setSubmitNewUser}
-                    setLoginType={setLoginType}
+                    theme={theme}
+                    setTheme={setTheme}
+                    themeId={themeId}
+                    setThemeId={setThemeId}
+                    newUserProfileInfo={newUserProfileInfo}
+                    setNewUserProfileInfo={setNewUserProfileInfo}
+                    newUserPreferences={newUserPreferences}
+                    setNewUserPreferences={setNewUserPreferences}
                   />
                 ) : null}
-                <LogInWithSocialMedia setSocialMediaLoginData = {setSocialMediaLoginData} setReturningUserIsValidated={setReturningUserIsValidated} />
               </div>
             </form>
           </div>

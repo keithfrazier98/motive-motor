@@ -5,33 +5,34 @@ import FourOFour from "./FourOFour";
 import Guest from "./Guest";
 import NewUser from "./NewUser";
 
-function LoginScreens() {
-  const [loginFormInfo, setLoginFormInfo] = useState({
-    email: "",
-    password: "",
-  });
-  const [returningUserIsValidated, setReturningUserIsValidated] =
-    useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [inputType, setInputType] = useState("password");
-  const [themeId, setThemeId] = useState("bw");
-  const [loading, setLoading] = useState(false);
-  const [emailError, setEmailError] = useState("");
-  const [theme, setTheme] = useState({
-    bkgd: "",
-    fontColor: "",
-    secBkgd: "",
-    btnColor: "",
-    headerBkgd: "",
-    navBkgd: "",
-    container: "",
-  });
-  const [loginType, setLoginType] = useState("default");
-  const [socialMediaLoginData, setSocialMediaLoginData] = useState({
-    socialMediaType: "",
-    data: "",
-  });
-
+function LoginScreens({
+  loginFormInfo,
+  setLoginFormInfo,
+  returningUserIsValidated,
+  setReturningUserIsValidated,
+  showPassword,
+  setShowPassword,
+  passwordInputType,
+  setPasswordInputType,
+  themeId,
+  setThemeId,
+  loading,
+  setLoading,
+  emailError,
+  setEmailError,
+  theme,
+  setTheme,
+  loginType,
+  setLoginType,
+  socialMediaLoginData,
+  setSocialMediaLoginData,
+  loggedIn,
+  setLoggedIn,
+  newUserPreferences, 
+  setNewUserPreferences, 
+  newUserProfileInfo,
+  setNewUserProfileInfo
+}) {
   const history = useHistory();
   useEffect(() => {
     if (returningUserIsValidated === true && loginFormInfo) {
@@ -41,7 +42,7 @@ function LoginScreens() {
 
   return (
     <>
-      {loginType === "default" ? (
+      {loginType === "default" || loginType === "new" ? (
         <DefaultLogin
           loginFormInfo={loginFormInfo}
           setLoginFormInfo={setLoginFormInfo}
@@ -49,8 +50,8 @@ function LoginScreens() {
           setReturningUserIsValidated={setReturningUserIsValidated}
           showPassword={showPassword}
           setShowPassword={setShowPassword}
-          inputType={inputType}
-          setInputType={setInputType}
+          passwordInputType={passwordInputType}
+          setPasswordInputType={setPasswordInputType}
           themeId={themeId}
           setThemeId={setThemeId}
           loading={loading}
@@ -63,9 +64,13 @@ function LoginScreens() {
           setLoginType={setLoginType}
           socialMediaLoginData={socialMediaLoginData}
           setSocialMediaLoginData={setSocialMediaLoginData}
+          newUserPreferences={newUserPreferences}
+          setNewUserPreferences={setNewUserPreferences}
+          loggedIn={loggedIn}
+          setLoggedIn={setLoggedIn}
+          newUserProfileInfo={newUserProfileInfo}
+          setNewUserProfileInfo={setNewUserProfileInfo}
         />
-      ) : loginType === "new" ? (
-        <NewUser setLoading={setLoading}/>
       ) : loginType === "guest" ? (
         <Guest />
       ) : (

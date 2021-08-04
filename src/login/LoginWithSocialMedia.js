@@ -18,8 +18,8 @@ function LogInWithSocialMedia({
   };
 
   const responseFacebook = (response) => {
-    setSocialMediaLoginData(response);
-    setReturningUserIsValidated(true);
+    //setSocialMediaLoginData(response);
+    //setReturningUserIsValidated(true);
   };
 
   return (
@@ -37,7 +37,7 @@ function LogInWithSocialMedia({
           onSuccess={responseGoogle}
           onFailure={responseGoogle}
           cookiePolicy={"single_host_origin"}
-          isSignedIn={true}
+          //isSignedIn={true}
         />
       </div>
       <div className="cell small-w"><FacebookLogin

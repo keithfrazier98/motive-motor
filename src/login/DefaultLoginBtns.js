@@ -1,8 +1,11 @@
 import React from "react";
 
-function DefaultLoginBtns({ theme, setSubmitNewUser, setLoginType }) {
-
-  const roundedCorners = {borderRadius:"3px"}
+function DefaultLoginBtns({
+  theme,
+  setSubmitNewUser,
+  setLoginType,
+}) {
+  const roundedCorners = { borderRadius: "3px" };
 
   return (
     <>
@@ -22,7 +25,6 @@ function DefaultLoginBtns({ theme, setSubmitNewUser, setLoginType }) {
           id="new"
           type="button"
           style={roundedCorners}
-
           onClick={() => {
             setSubmitNewUser(true);
           }}
@@ -36,7 +38,6 @@ function DefaultLoginBtns({ theme, setSubmitNewUser, setLoginType }) {
           id="guest"
           type="button"
           style={roundedCorners}
-
           onClick={() => setLoginType("guest")}
         >
           guest
