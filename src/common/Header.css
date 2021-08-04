@@ -1,0 +1,40 @@
+.headerH1 {
+  font-size: 1rem;
+  font-family: "Lobster", cursive;
+  margin: 0;
+}
+.headerSlogan {
+  margin: 0;
+  font-size: 0.75rem;
+  font-family: "Lobster", cursive;
+}
+
+.themeBtn {
+  font-size: 0.5em;
+  padding: 5px;
+  margin: 0 10px 0 10px;
+}
+
+.headerLogo {
+  float: right;
+  width: 30px;
+}
+
+
+@media all and (min-width: 700px) {
+  .themeBtn {
+    font-size: 1em;
+  }
+  
+  .headerH1 {
+    font-size: 2rem;
+  }
+
+  .headerSlogan {
+    font-size: 1rem;
+  }
+
+  .headerLogo {
+    width: 60px;
+  }
+}

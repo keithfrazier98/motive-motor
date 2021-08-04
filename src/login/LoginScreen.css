@@ -1,0 +1,54 @@
+ion-icon {
+    font-size: 2em;
+  }
+
+.loginH2{
+    font-size: 3rem;
+    font-family: 'Lobster', cursive;
+}
+.loginForm{
+    margin: 20px 0 0 0;
+    font-family: 'Raleway', sans-serif;
+}
+
+button{
+    border-radius: 3px;
+}
+
+.eye{
+    padding: 2px;
+    margin:8px 0 0 0;
+}
+
+@keyframes fadeIn{
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
+
+@keyframes fadeOut{
+    100% {opacity:0;}
+    0% {opacity:1;}
+}
+
+
+
+.fadeIn{
+    animation: fadeIn 2s
+}
+
+.fadeOut{
+    animation: fadeOut 2s;
+}
+
+.google{
+    border-radius: 6px;
+    background: url(../google_signin_buttons/1x/btn_google_signin_light_normal_web.png);
+}
+.google:hover{
+    background: url(../google_signin_buttons/1x/btn_google_signin_light_focus_web.png)
+}
+@media all and (min-width:700px){
+    .loginH2{
+        font-size: 7rem;
+    }
+}

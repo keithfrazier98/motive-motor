@@ -15,3 +15,21 @@ Front-end stack quick list
 - Foundation CSS
 - HTML/JSX 
 - CSS
+
+
+Sunset Color Palette:
+
+Jasmine: FFE57F
+Copper Crayola: E88D67
+Middle Blue Green: 93E1D8
+Pale Purple Pantone: F1E3F3
+Dark Liver: 69585F
+
+
+Forest Color Palette:
+
+Lavendar Blush: F1E4E8
+Dark Cornflower Blue: #313B72
+Rajah: FFAB66
+Dark Sea Green: 8FBC94
+Laurel Green: C0D16F
