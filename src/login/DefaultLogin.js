@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { isExistingUser } from "../utils/api.js";
+import { isExistingUser, createNewUser } from "../utils/api.js";
 import ErrorMessage from "../common/ErrorMessage.js";
 import ReturningUserMessage from "./ReturningUserMessage";
 import DefaultLoginBtns from "./DefaultLoginBtns.js";
@@ -9,6 +9,7 @@ import "./LoginScreen.css";
 import Header from "../common/Header";
 import logo200 from "../images/logo200.png";
 import LogInWithSocialMedia from "./LoginWithSocialMedia.js";
+import * as EmailValidator from "email-validator";
 
 function DefaultLogin({
   loginFormInfo,
@@ -39,7 +40,8 @@ function DefaultLogin({
   setNewUserProfileInfo,
 }) {
   const [routeToLogin, setRouteToLogin] = useState(false);
-  const [sumbitNewUser, setSubmitNewUser] = useState(false);
+  const [createNewUser, setCreateNewUser] = useState(false);
+  const [loginEmailIsTaken, setLoginEmailIsTaken] = useState(false);
   const roundedCorners = { borderRadius: "3px" };
 
   useEffect(() => {
@@ -99,52 +101,106 @@ function DefaultLogin({
     }
   };
 
-  function handleChange ({ target: { id, value } }) {
-    setLoginFormInfo({ ...loginFormInfo, [id]: value });
-  };
+  function handleChange({ target: { id, value } }) {
+    if (routeToLogin || emailError || loginEmailIsTaken) {
+      setRouteToLogin(false);
+      setEmailError(false);
+      setLoginEmailIsTaken(false);
+    }
+    switch (loginType) {
+      case "existing":
+        setLoginFormInfo({ ...loginFormInfo, [id]: value });
+        break;
+      case "new":
+        setLoginFormInfo({ ...loginFormInfo, [id]: value });
+        setNewUserProfileInfo({
+          ...newUserProfileInfo,
+          ...loginFormInfo,
+          [id]: value,
+        });
+        break;
+      default:
+        break;
+    }
+  }
 
   async function checkForReturningUser(submitType) {
-    await isExistingUser(loginFormInfo.email)
+    const abortController = new AbortController();
+    await isExistingUser(loginFormInfo.email, abortController.signal)
       .then((response) => {
+        console.log(response);
+        setLoginEmailIsTaken(true);
+        //first submit if : user is simply logging in with valid information
         if (
           response.password === loginFormInfo.password &&
           submitType === "existing"
         ) {
           setReturningUserIsValidated(true);
           setLoggedIn(true);
-        } else if (
+        }
+        //second submit if: user is trying to create a new user with valid login information
+        else if (
           response.password === loginFormInfo.password &&
           submitType === "new"
         ) {
+          setReturningUserIsValidated(true);
+          setRouteToLogin(true);
+        }
+        // third submit if: password is incorrect on a simple login for an existing user
+        else if (
+          response.password !== loginFormInfo.password &&
+          submitType === "existing"
+        ) {
+          setEmailError({ message: "Incorrect password" });
+        }
+        // fourth submit if : user is trying to create an account with an existing email and password is incorrect
+        else if (submitType === "new" && !emailError && !loginEmailIsTaken) {
           setRouteToLogin(true);
         }
       })
-      .catch((res)=> {
-
-        if(submitType !== "new"){
-          setEmailError(res)
-        } else { 
-          setLoginType("new")
-          
+      .catch((res) => {
+        if (submitType !== "new") {
+          setEmailError(res);
+        } else {
+          setLoginType("new");
         }
-
       });
   }
 
   const submitLogin = (event) => {
     if (event) {
       event.preventDefault();
-      checkForReturningUser("existing");
+      const validEmail = EmailValidator.validate(loginFormInfo.email);
+      console.log(loginType);
+      if (validEmail) {
+        checkForReturningUser("existing");
+      } else {
+        setRouteToLogin(false);
+        setEmailError({ message: "Incorrect email format" });
+      }
     } else {
       checkForReturningUser("new");
     }
   };
 
+  const submitCreateNewUser = (event) => {
+    const validEmail = EmailValidator.validate(loginFormInfo.email);
+    if (validEmail) {
+      checkForReturningUser("new");
+      if (!loginEmailIsTaken && !emailError) {
+        const abortController = new AbortController();
+        createNewUser(newUserProfileInfo, abortController.signal);
+      }
+    } else {
+      setEmailError({ message: "Incorrect email format" });
+    }
+  };
+
   useEffect(() => {
-    if (sumbitNewUser) {
+    if (createNewUser) {
       submitLogin();
     }
-  }, [sumbitNewUser]);
+  }, [createNewUser]);
 
   const createPageContent = () => {
     return (
@@ -203,6 +259,23 @@ function DefaultLogin({
                         )}
                       </button>
                     </div>
+                    {loginType === "new" ? (
+                      <NewUser
+                        loading={loading}
+                        setLoading={setLoading}
+                        loginFormInfo={loginFormInfo}
+                        theme={theme}
+                        setTheme={setTheme}
+                        themeId={themeId}
+                        setThemeId={setThemeId}
+                        newUserProfileInfo={newUserProfileInfo}
+                        setNewUserProfileInfo={setNewUserProfileInfo}
+                        newUserPreferences={newUserPreferences}
+                        setNewUserPreferences={setNewUserPreferences}
+                        handleChange={handleChange}
+                        loginEmailIsTaken={loginEmailIsTaken}
+                      />
+                    ) : null}
                   </div>
                 </div>
               </div>
@@ -210,17 +283,20 @@ function DefaultLogin({
                 <ErrorMessage error={emailError} />
                 {routeToLogin ? (
                   <ReturningUserMessage
+                    returningUserIsValidated={returningUserIsValidated}
                     setReturningUserIsValidated={setReturningUserIsValidated}
                     setLoginType={setLoginType}
                     setLoading={setLoading}
                     setLoggedIn={setLoggedIn}
+                    setEmailError={setEmailError}
+                    setRouteToLogin={setRouteToLogin}
                   />
                 ) : null}
-                {loginType === "default" ? (
+                {loginType === "existing" ? (
                   <>
                     <DefaultLoginBtns
                       theme={theme}
-                      setSubmitNewUser={setSubmitNewUser}
+                      setCreateNewUser={setCreateNewUser}
                       setLoginType={setLoginType}
                     />
                     <LogInWithSocialMedia
@@ -228,21 +304,27 @@ function DefaultLogin({
                       setReturningUserIsValidated={setReturningUserIsValidated}
                     />
                   </>
-                ) : loginType === "new" ? (
-                  <NewUser
-                    loading={loading}
-                    setLoading={setLoading}
-                    loginFormInfo={loginFormInfo}
-                    theme={theme}
-                    setTheme={setTheme}
-                    themeId={themeId}
-                    setThemeId={setThemeId}
-                    newUserProfileInfo={newUserProfileInfo}
-                    setNewUserProfileInfo={setNewUserProfileInfo}
-                    newUserPreferences={newUserPreferences}
-                    setNewUserPreferences={setNewUserPreferences}
-                  />
-                ) : null}
+                ) : (
+                  <div className="cell small-4">
+                    <button
+                      type="button"
+                      id="create_user"
+                      style={roundedCorners}
+                      onClick={
+                        loginEmailIsTaken || emailError
+                          ? null
+                          : submitCreateNewUser
+                      }
+                      className={`${
+                        loginEmailIsTaken || emailError
+                          ? "button disabled"
+                          : "button"
+                      } ${theme.btnColor}`}
+                    >
+                      submit
+                    </button>
+                  </div>
+                )}
               </div>
             </form>
           </div>

@@ -35,14 +35,14 @@ function LoginScreens({
 }) {
   const history = useHistory();
   useEffect(() => {
-    if (returningUserIsValidated === true && loginFormInfo) {
+    if (loggedIn === true && loginFormInfo) {
       history.push("./dashboard");
     }
-  }, [returningUserIsValidated, loginFormInfo]);
+  }, [loggedIn, loginFormInfo]);
 
   return (
     <>
-      {loginType === "default" || loginType === "new" ? (
+      {loginType === "existing" || loginType === "new" ? (
         <DefaultLogin
           loginFormInfo={loginFormInfo}
           setLoginFormInfo={setLoginFormInfo}

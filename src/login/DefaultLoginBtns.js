@@ -2,7 +2,7 @@ import React from "react";
 
 function DefaultLoginBtns({
   theme,
-  setSubmitNewUser,
+  setCreateNewUser,
   setLoginType,
 }) {
   const roundedCorners = { borderRadius: "3px" };
@@ -26,7 +26,7 @@ function DefaultLoginBtns({
           type="button"
           style={roundedCorners}
           onClick={() => {
-            setSubmitNewUser(true);
+            setCreateNewUser(true);
           }}
         >
           new user

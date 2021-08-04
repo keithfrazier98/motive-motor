@@ -22,7 +22,7 @@ function AppStates() {
     navBkgd: "",
     container: "",
   });
-  const [loginType, setLoginType] = useState("default");
+  const [loginType, setLoginType] = useState("existing");
   const [socialMediaLoginData, setSocialMediaLoginData] = useState({
     socialMediaType: "",
     data: "",
