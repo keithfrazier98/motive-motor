@@ -10,7 +10,7 @@ function AppStates() {
     useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [passwordInputType, setPasswordInputType] = useState("password");
-  const [themeId, setThemeId] = useState("bw");
+  const [theme_id, setThemeId] = useState("bw");
   const [loading, setLoading] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [theme, setTheme] = useState({
@@ -23,15 +23,12 @@ function AppStates() {
     container: "",
   });
   const [loginType, setLoginType] = useState("existing");
-  const [socialMediaLoginData, setSocialMediaLoginData] = useState({
-    socialMediaType: "",
-    data: "",
-  });
+  const [socialMediaLoginData, setSocialMediaLoginData] = useState(false);
   const [newUserProfileInfo, setNewUserProfileInfo] = useState({
     first_name: "",
     last_name: "",
   });
-  const [newUserPreferences, setNewUserPreferences] = useState({ themeId: "" });
+  const [newUserPreferences, setNewUserPreferences] = useState({ theme_id: "" });
   const [loggedIn, setLoggedIn] = useState(false);
 
   return (
@@ -45,7 +42,7 @@ function AppStates() {
         setShowPassword={setShowPassword}
         passwordInputType={passwordInputType}
         setPasswordInputType={setPasswordInputType}
-        themeId={themeId}
+        theme_id={theme_id}
         setThemeId={setThemeId}
         loading={loading}
         setLoading={setLoading}

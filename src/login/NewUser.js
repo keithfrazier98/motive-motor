@@ -5,7 +5,7 @@ function NewUser({ loading,
     loginFormInfo,
     theme,
     setTheme,
-    themeId,
+    theme_id,
     setThemeId,
     newUserProfileInfo,
     setNewUserProfileInfo,
@@ -17,9 +17,9 @@ function NewUser({ loading,
 
   useEffect(() => {
     setNewUserProfileInfo({...loginFormInfo, ...newUserProfileInfo})
-    setNewUserPreferences({...newUserPreferences, [themeId]: themeId})
+    setNewUserPreferences({['theme_id']:theme_id})
     setLoading(false);
-  }, [loginFormInfo]);
+  }, [loginFormInfo, theme_id]);
 
   return (
       <>{loginEmailIsTaken? null :

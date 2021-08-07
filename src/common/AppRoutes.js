@@ -12,7 +12,7 @@ export default function AppRoutes({
   setShowPassword,
   passwordInputType,
   setPasswordInputType,
-  themeId,
+  theme_id,
   setThemeId,
   loading,
   setLoading,
@@ -46,7 +46,7 @@ export default function AppRoutes({
           setShowPassword={setShowPassword}
           passwordInputType={passwordInputType}
           setPasswordInputType={setPasswordInputType}
-          themeId={themeId}
+          theme_id={theme_id}
           setThemeId={setThemeId}
           loading={loading}
           setLoading={setLoading}

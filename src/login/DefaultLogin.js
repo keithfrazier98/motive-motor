@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { isExistingUser, createNewUser } from "../utils/api.js";
+import { isExistingUser, createNewUserAPI, test } from "../utils/api.js";
 import ErrorMessage from "../common/ErrorMessage.js";
 import ReturningUserMessage from "./ReturningUserMessage";
 import DefaultLoginBtns from "./DefaultLoginBtns.js";
@@ -20,7 +20,7 @@ function DefaultLogin({
   setShowPassword,
   passwordInputType,
   setPasswordInputType,
-  themeId,
+  theme_id,
   setThemeId,
   loading,
   setLoading,
@@ -47,11 +47,18 @@ function DefaultLogin({
   useEffect(() => {
     setLoading(true);
     handleThemeChange().then(createPageContent()).then(setLoading(false));
-  }, [themeId, setLoading]);
+  }, [theme_id, setLoading]);
+
+  useEffect(() => {
+    console.log("useEffect", createNewUser, loginType);
+    if (createNewUser) {
+      submitLogin();
+    }
+  }, [createNewUser]);
 
   const handleThemeChange = () => {
     return new Promise((res) => {
-      switch (themeId) {
+      switch (theme_id) {
         case "bw":
           setTheme({
             bkgd: "",
@@ -125,13 +132,49 @@ function DefaultLogin({
   }
 
   async function checkForReturningUser(submitType) {
+    console.log(
+      "checkforexistinguser",
+      submitType,
+      socialMediaLoginData,
+      loginFormInfo
+    );
     const abortController = new AbortController();
-    await isExistingUser(loginFormInfo.email, abortController.signal)
+    let validationKey;
+    let validationType;
+    if (loginType === "social-media") {
+      switch (socialMediaLoginData.type) {
+        case "facebook":
+          validationType = "fb_login_id";
+          validationKey = socialMediaLoginData.id;
+          console.log("facebook");
+          break;
+        case "google":
+          validationType = "email";
+          validationKey = socialMediaLoginData.email;
+          console.log("google");
+          break;
+        default:
+          console.error("default social media login submission was called");
+          break;
+      }
+    } else {
+      validationType = "email";
+      validationKey = loginFormInfo.email;
+    }
+
+    await isExistingUser(validationType, validationKey, abortController.signal)
       .then((response) => {
+        console.log("responsing");
         console.log(response);
         setLoginEmailIsTaken(true);
         //first submit if : user is simply logging in with valid information
+        if(socialMediaLoginData){
+          console.log(true, socialMediaLoginData, loginType, loginFormInfo)
+        } else {
+          console.log(false, socialMediaLoginData, loginType, loginFormInfo)
+        }
         if (
+          !socialMediaLoginData &&
           response.password === loginFormInfo.password &&
           submitType === "existing"
         ) {
@@ -159,6 +202,8 @@ function DefaultLogin({
         }
       })
       .catch((res) => {
+        console.log("caught");
+        console.log(submitType);
         if (submitType !== "new") {
           setEmailError(res);
         } else {
@@ -168,10 +213,12 @@ function DefaultLogin({
   }
 
   const submitLogin = (event) => {
-    if (event) {
+    //the "login" button is the only button that will call submit login with an event
+    console.log("submitLogin", loginFormInfo, loginType, socialMediaLoginData);
+    if (event && event.target.id === "login-form") {
       event.preventDefault();
+      console.log(event.target.id)
       const validEmail = EmailValidator.validate(loginFormInfo.email);
-      console.log(loginType);
       if (validEmail) {
         checkForReturningUser("existing");
       } else {
@@ -179,28 +226,38 @@ function DefaultLogin({
         setEmailError({ message: "Incorrect email format" });
       }
     } else {
-      checkForReturningUser("new");
+      switch (loginType) {
+        // user selected "new user"
+        case "new":
+        case "existing":
+          checkForReturningUser("new");
+          break;
+        case "social-media":
+          checkForReturningUser("social-media");
+          break;
+        default:
+          console.log("switch on login failed");
+          break;
+      }
     }
   };
 
-  const submitCreateNewUser = (event) => {
+  const submitCreateNewUserAPI = (event) => {
     const validEmail = EmailValidator.validate(loginFormInfo.email);
     if (validEmail) {
       checkForReturningUser("new");
       if (!loginEmailIsTaken && !emailError) {
         const abortController = new AbortController();
-        createNewUser(newUserProfileInfo, abortController.signal);
+        createNewUserAPI(
+          newUserProfileInfo,
+          newUserPreferences,
+          abortController.signal
+        );
       }
     } else {
       setEmailError({ message: "Incorrect email format" });
     }
   };
-
-  useEffect(() => {
-    if (createNewUser) {
-      submitLogin();
-    }
-  }, [createNewUser]);
 
   const createPageContent = () => {
     return (
@@ -215,9 +272,13 @@ function DefaultLogin({
               <h2 className="loginH2">Welcome!</h2>
               <img src={logo200} alt="motive-motor-logo" width="150px" />
             </div>
-            <form onSubmit={submitLogin} className="loginForm">
+            <form  id='login-form' onSubmit={submitLogin} className="loginForm">
               <div className="grid-container">
-                <p>Let's get logged in:</p>
+                <p>
+                  {loginType === "new"
+                    ? "Let's get signed up:"
+                    : "Let's get logged in:"}
+                </p>
                 <div>
                   <div className="grid-x align-middle align-center grid-margin-x">
                     <div className="cell medium-12">
@@ -266,7 +327,7 @@ function DefaultLogin({
                         loginFormInfo={loginFormInfo}
                         theme={theme}
                         setTheme={setTheme}
-                        themeId={themeId}
+                        theme_id={theme_id}
                         setThemeId={setThemeId}
                         newUserProfileInfo={newUserProfileInfo}
                         setNewUserProfileInfo={setNewUserProfileInfo}
@@ -292,7 +353,7 @@ function DefaultLogin({
                     setRouteToLogin={setRouteToLogin}
                   />
                 ) : null}
-                {loginType === "existing" ? (
+                {loginType === "existing" || loginType === "social-media" ? (
                   <>
                     <DefaultLoginBtns
                       theme={theme}
@@ -301,11 +362,24 @@ function DefaultLogin({
                     />
                     <LogInWithSocialMedia
                       setSocialMediaLoginData={setSocialMediaLoginData}
-                      setReturningUserIsValidated={setReturningUserIsValidated}
+                      submitLogin={submitLogin}
+                      submitCreateNewUserAPI={submitCreateNewUserAPI}
+                      setLoginFormInfo={setLoginFormInfo}
+                      setLoginType={setLoginType}
                     />
                   </>
                 ) : (
-                  <div className="cell small-4">
+                  <div className="cell small-12">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setLoginType("existing");
+                      }}
+                      className={`button ${theme.btnColor}`}
+                      style={{ marginRight: "10px", borderRadius: "3px" }}
+                    >
+                      Back to Login
+                    </button>
                     <button
                       type="button"
                       id="create_user"
@@ -313,7 +387,7 @@ function DefaultLogin({
                       onClick={
                         loginEmailIsTaken || emailError
                           ? null
-                          : submitCreateNewUser
+                          : submitCreateNewUserAPI
                       }
                       className={`${
                         loginEmailIsTaken || emailError

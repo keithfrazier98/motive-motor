@@ -26,6 +26,7 @@ function DefaultLoginBtns({
           type="button"
           style={roundedCorners}
           onClick={() => {
+            console.log("setting new user to true")
             setCreateNewUser(true);
           }}
         >

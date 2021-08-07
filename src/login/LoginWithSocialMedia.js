@@ -8,18 +8,30 @@ import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props
 
 function LogInWithSocialMedia({
   setSocialMediaLoginData,
-  setReturningUserIsValidated,
+  submitLogin,
+  setLoginFormInfo,
+  setLoginType
 }) {
   const logout = () => {};
 
+  const preliminary = () => {
+    setLoginType("social-media")
+    setLoginFormInfo({email:"", password:""})
+    setSocialMediaLoginData(null)
+  }
+
   const responseGoogle = (response) => {
-    setSocialMediaLoginData(response.profileObj);
-    setReturningUserIsValidated(true);
+    preliminary()
+    const {email} = response.profileObj
+    setSocialMediaLoginData({type:'google', email: email})
+    //submitLogin()
   };
 
   const responseFacebook = (response) => {
-    //setSocialMediaLoginData(response);
-    //setReturningUserIsValidated(true);
+    preliminary()
+    const {id} = response
+    setSocialMediaLoginData({type:'facebook', id: id})
+    //submitLogin()
   };
 
   return (
@@ -33,7 +45,6 @@ function LogInWithSocialMedia({
               disabled={renderProps.disabled}
             />
           )}
-          buttonText="Login"
           onSuccess={responseGoogle}
           onFailure={responseGoogle}
           cookiePolicy={"single_host_origin"}
@@ -43,7 +54,8 @@ function LogInWithSocialMedia({
       <div className="cell small-w"><FacebookLogin
         appId="244836170795402"
         autoLoad={true}
-        fields="name,email,picture"
+        scope="public_profile,email"
+        fields="email,first_name,last_name"
         callback={responseFacebook}
         render={(renderProps) => (
           <FacebookLoginButton

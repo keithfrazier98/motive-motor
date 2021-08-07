@@ -3,7 +3,6 @@ import { useHistory } from "react-router-dom";
 import DefaultLogin from "./DefaultLogin";
 import FourOFour from "./FourOFour";
 import Guest from "./Guest";
-import NewUser from "./NewUser";
 
 function LoginScreens({
   loginFormInfo,
@@ -14,7 +13,7 @@ function LoginScreens({
   setShowPassword,
   passwordInputType,
   setPasswordInputType,
-  themeId,
+  theme_id,
   setThemeId,
   loading,
   setLoading,
@@ -52,7 +51,7 @@ function LoginScreens({
           setShowPassword={setShowPassword}
           passwordInputType={passwordInputType}
           setPasswordInputType={setPasswordInputType}
-          themeId={themeId}
+          theme_id={theme_id}
           setThemeId={setThemeId}
           loading={loading}
           setLoading={setLoading}

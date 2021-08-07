@@ -1,12 +1,15 @@
 const fetch = require("cross-fetch");
 
-const API_BASE_URL = process.env.BASE_URL || "http://localhost:5000";
+const API_BASE_URL = /*process.env.BASE_URL ||*/ "http://localhost:5000";
 
 /**
  * Defines the default headers for these functions to work with `json-server`
  */
-const headers = new Headers();
-headers.append("Content-Type", "application/json");
+//const headers = new Headers();
+//headers.append("Content-Type", "application/json");
+
+
+const headers = { "Content-Type": "application/json" };
 
 /**
  * Fetch `json` from the specified URL and handle error status codes and ignore `AbortError`s
@@ -46,18 +49,21 @@ async function fetchJson(url, options, onCancel) {
   }
 }
 
-export async function isExistingUser(email, signal) {
-  const url = `${API_BASE_URL}/logins/${email}`;
+export async function isExistingUser(type,key, signal) {
+  console.log("checking API")
+  const url = `${API_BASE_URL}/logins/validate?${type}=${key}`;
   return await fetchJson(url, { headers, signal }, []);
 }
 
-export async function createNewUser(newUserProfileInfo, signal) {
+export async function createNewUserAPI(newUserProfileInfo, newUserPreferences, signal) {
   const url = `${API_BASE_URL}/logins/new`;
   const options = {
     headers,
     method: "POST",
     signal,
-    body: { data: newUserProfileInfo },
+    body: JSON.stringify({data:{...newUserProfileInfo, ...newUserPreferences}}),
   };
-  return await fetchJson(url, options)
+  console.log(options)
+  return await fetchJson(url, options,[])
 }
+ 
