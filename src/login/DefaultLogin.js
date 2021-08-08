@@ -168,10 +168,10 @@ function DefaultLogin({
         console.log(response);
         setLoginEmailIsTaken(true);
         //first submit if : user is simply logging in with valid information
-        if(socialMediaLoginData){
-          console.log(true, socialMediaLoginData, loginType, loginFormInfo)
+        if (socialMediaLoginData) {
+          console.log(true, socialMediaLoginData, loginType, loginFormInfo);
         } else {
-          console.log(false, socialMediaLoginData, loginType, loginFormInfo)
+          console.log(false, socialMediaLoginData, loginType, loginFormInfo);
         }
         if (
           !socialMediaLoginData &&
@@ -217,7 +217,7 @@ function DefaultLogin({
     console.log("submitLogin", loginFormInfo, loginType, socialMediaLoginData);
     if (event && event.target.id === "login-form") {
       event.preventDefault();
-      console.log(event.target.id)
+      console.log(event.target.id);
       const validEmail = EmailValidator.validate(loginFormInfo.email);
       if (validEmail) {
         checkForReturningUser("existing");
@@ -252,7 +252,11 @@ function DefaultLogin({
           newUserProfileInfo,
           newUserPreferences,
           abortController.signal
-        );
+        )
+          .then(setLoggedIn(true))
+          .catch((res) => {
+            setEmailError(res);
+          });
       }
     } else {
       setEmailError({ message: "Incorrect email format" });
@@ -272,7 +276,7 @@ function DefaultLogin({
               <h2 className="loginH2">Welcome!</h2>
               <img src={logo200} alt="motive-motor-logo" width="150px" />
             </div>
-            <form  id='login-form' onSubmit={submitLogin} className="loginForm">
+            <form id="login-form" onSubmit={submitLogin} className="loginForm">
               <div className="grid-container">
                 <p>
                   {loginType === "new"
