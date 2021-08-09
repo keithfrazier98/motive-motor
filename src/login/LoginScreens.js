@@ -27,10 +27,10 @@ function LoginScreens({
   setSocialMediaLoginData,
   loggedIn,
   setLoggedIn,
-  newUserPreferences, 
-  setNewUserPreferences, 
+  newUserPreferences,
+  setNewUserPreferences,
   newUserProfileInfo,
-  setNewUserProfileInfo
+  setNewUserProfileInfo,
 }) {
   const history = useHistory();
   useEffect(() => {
@@ -39,9 +39,11 @@ function LoginScreens({
     }
   }, [loggedIn, loginFormInfo]);
 
+  console.log("loginscreens", loggedIn, loginType);
+
   return (
     <>
-      {loginType === "existing" || loginType === "new" ? (
+      {loginType === "existing" || loginType === "new" || "social-media" ? (
         <DefaultLogin
           loginFormInfo={loginFormInfo}
           setLoginFormInfo={setLoginFormInfo}

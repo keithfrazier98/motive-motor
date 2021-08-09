@@ -9,7 +9,9 @@ import "./LoginScreen.css";
 import Header from "../common/Header";
 import logo200 from "../images/logo200.png";
 import LogInWithSocialMedia from "./LoginWithSocialMedia.js";
+import SignUpWithSocialMediaMessage from "./SignUpWIthSocialMediaMessage.js";
 import * as EmailValidator from "email-validator";
+import BackToLoginBtn from "./BackToLoginBtn.js";
 
 function DefaultLogin({
   loginFormInfo,
@@ -50,11 +52,14 @@ function DefaultLogin({
   }, [theme_id, setLoading]);
 
   useEffect(() => {
-    console.log("useEffect", createNewUser, loginType);
     if (createNewUser) {
       submitLogin();
     }
   }, [createNewUser]);
+
+  useEffect(() => {
+    if (loginType === "social-media") submitLogin();
+  }, [loginType]);
 
   const handleThemeChange = () => {
     return new Promise((res) => {
@@ -141,17 +146,16 @@ function DefaultLogin({
     const abortController = new AbortController();
     let validationKey;
     let validationType;
+    console.log(loginType, "in checking for returning user");
     if (loginType === "social-media") {
       switch (socialMediaLoginData.type) {
         case "facebook":
           validationType = "fb_login_id";
           validationKey = socialMediaLoginData.id;
-          console.log("facebook");
           break;
         case "google":
           validationType = "email";
           validationKey = socialMediaLoginData.email;
-          console.log("google");
           break;
         default:
           console.error("default social media login submission was called");
@@ -164,15 +168,13 @@ function DefaultLogin({
 
     await isExistingUser(validationType, validationKey, abortController.signal)
       .then((response) => {
-        console.log("responsing");
-        console.log(response);
         setLoginEmailIsTaken(true);
-        //first submit if : user is simply logging in with valid information
-        if (socialMediaLoginData) {
+        /*if (socialMediaLoginData) {
           console.log(true, socialMediaLoginData, loginType, loginFormInfo);
         } else {
           console.log(false, socialMediaLoginData, loginType, loginFormInfo);
-        }
+        }*/
+
         if (
           !socialMediaLoginData &&
           response.password === loginFormInfo.password &&
@@ -202,8 +204,6 @@ function DefaultLogin({
         }
       })
       .catch((res) => {
-        console.log("caught");
-        console.log(submitType);
         if (submitType !== "new") {
           setEmailError(res);
         } else {
@@ -214,7 +214,13 @@ function DefaultLogin({
 
   const submitLogin = (event) => {
     //the "login" button is the only button that will call submit login with an event
-    console.log("submitLogin", loginFormInfo, loginType, socialMediaLoginData);
+    console.log(
+      "submitLogin",
+      loginFormInfo,
+      loginType,
+      socialMediaLoginData,
+      createNewUser
+    );
     if (event && event.target.id === "login-form") {
       event.preventDefault();
       console.log(event.target.id);
@@ -271,7 +277,7 @@ function DefaultLogin({
           className="grid-x grid-margin-y align-center align-middle"
           style={{ height: "100%" }}
         >
-          <div className="cell small-11 medium-4 large-3">
+          <div className="cell small-11 medium-4 large-3" style={{ zIndex: 1 }}>
             <div className="grid-x align-center">
               <h2 className="loginH2">Welcome!</h2>
               <img src={logo200} alt="motive-motor-logo" width="150px" />
@@ -345,7 +351,23 @@ function DefaultLogin({
                 </div>
               </div>
               <div className="grid-x grid-margin-x grid-margin-y align-center text-center formButtons">
-                <ErrorMessage error={emailError} />
+                <>
+                  {loginType === "social-media" && emailError ? (
+                    <SignUpWithSocialMediaMessage
+                      socialMediaLoginData={socialMediaLoginData}
+                      submitCreateNewUserAPI={submitCreateNewUserAPI}
+                      setNewUserPreferences={setNewUserPreferences}
+                      setNewUserProfileInfo={setNewUserProfileInfo}
+                      setCreateNewUser={setCreateNewUser}
+                      setEmailError={setEmailError}
+                      theme_id={theme_id}
+                      setLoginType={setLoginType}
+                      theme={theme}
+                    />
+                  ) : (
+                    <ErrorMessage error={emailError} />
+                  )}
+                </>
                 {routeToLogin ? (
                   <ReturningUserMessage
                     returningUserIsValidated={returningUserIsValidated}
@@ -364,26 +386,14 @@ function DefaultLogin({
                       setCreateNewUser={setCreateNewUser}
                       setLoginType={setLoginType}
                     />
-                    <LogInWithSocialMedia
-                      setSocialMediaLoginData={setSocialMediaLoginData}
-                      submitLogin={submitLogin}
-                      submitCreateNewUserAPI={submitCreateNewUserAPI}
-                      setLoginFormInfo={setLoginFormInfo}
-                      setLoginType={setLoginType}
-                    />
                   </>
                 ) : (
                   <div className="cell small-12">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setLoginType("existing");
-                      }}
-                      className={`button ${theme.btnColor}`}
-                      style={{ marginRight: "10px", borderRadius: "3px" }}
-                    >
-                      Back to Login
-                    </button>
+                    <BackToLoginBtn
+                      setEmailError={setEmailError}
+                      setLoginType={setLoginType}
+                      theme={theme}
+                    />
                     <button
                       type="button"
                       id="create_user"
@@ -405,6 +415,17 @@ function DefaultLogin({
                 )}
               </div>
             </form>
+            <>
+              <LogInWithSocialMedia
+                setSocialMediaLoginData={setSocialMediaLoginData}
+                submitLogin={submitLogin}
+                submitCreateNewUserAPI={submitCreateNewUserAPI}
+                setLoginFormInfo={setLoginFormInfo}
+                setLoginType={setLoginType}
+                setEmailError={setEmailError}
+                loginType={loginType}
+              />
+            </>
           </div>
         </div>
       </>
