@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import LoginScreens from "../login/LoginScreens";
 import Dashboard from "../dashboard/Dashboard";
+import HandleThemeChange from "./HandleThemeChange";
 
 export default function AppRoutes({
   loginFormInfo,
@@ -30,6 +31,12 @@ export default function AppRoutes({
   setNewUserPreferences,
   loggedIn,
   setLoggedIn,
+  routeToLogin,
+  setRouteToLogin,
+  createNewUser,
+  setCreateNewUser,
+  loginEmailIsTaken,
+  setLoginEmailIsTaken,
 }) {
   return (
     <Switch>
@@ -64,6 +71,12 @@ export default function AppRoutes({
           setNewUserPreferences={setNewUserPreferences}
           loggedIn={loggedIn}
           setLoggedIn={setLoggedIn}
+          routeToLogin = {routeToLogin}
+        setRouteToLogin = {setRouteToLogin}
+        createNewUser = {createNewUser}
+        setCreateNewUser = {setCreateNewUser}
+        loginEmailIsTaken = {loginEmailIsTaken}
+        setLoginEmailIsTaken = {setLoginEmailIsTaken}
         />
       </Route>
       <Route path="/dashboard">

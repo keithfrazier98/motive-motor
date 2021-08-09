@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import AppRoutes from "./AppRoutes";
 
+// AppStates is called to render by app.js
+// 
+
 function AppStates() {
   const [loginFormInfo, setLoginFormInfo] = useState({
     email: "",
@@ -10,7 +13,7 @@ function AppStates() {
     useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [passwordInputType, setPasswordInputType] = useState("password");
-  const [theme_id, setThemeId] = useState("bw");
+  const [theme_id, setThemeId] = useState("sunset");
   const [loading, setLoading] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [theme, setTheme] = useState({
@@ -30,6 +33,9 @@ function AppStates() {
   });
   const [newUserPreferences, setNewUserPreferences] = useState({ theme_id: "" });
   const [loggedIn, setLoggedIn] = useState(false);
+  const [routeToLogin, setRouteToLogin] = useState(false);
+  const [createNewUser, setCreateNewUser] = useState(false);
+  const [loginEmailIsTaken, setLoginEmailIsTaken] = useState(false);
 
   return (
     <>
@@ -60,6 +66,13 @@ function AppStates() {
         setLoggedIn={setLoggedIn}
         newUserPreferences={newUserPreferences}
         setNewUserPreferences={setNewUserPreferences}
+        routeToLogin = {routeToLogin}
+        setRouteToLogin = {setRouteToLogin}
+        createNewUser = {createNewUser}
+        setCreateNewUser = {setCreateNewUser}
+        loginEmailIsTaken = {loginEmailIsTaken}
+        setLoginEmailIsTaken = {setLoginEmailIsTaken}
+        
       />
     </>
   );

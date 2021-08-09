@@ -31,6 +31,12 @@ function LoginScreens({
   setNewUserPreferences,
   newUserProfileInfo,
   setNewUserProfileInfo,
+  routeToLogin,
+  setRouteToLogin,
+  createNewUser,
+  setCreateNewUser,
+  loginEmailIsTaken,
+  setLoginEmailIsTaken,
 }) {
   const history = useHistory();
   useEffect(() => {
@@ -69,6 +75,13 @@ function LoginScreens({
           setLoggedIn={setLoggedIn}
           newUserProfileInfo={newUserProfileInfo}
           setNewUserProfileInfo={setNewUserProfileInfo}
+          routeToLogin = {routeToLogin}
+        setRouteToLogin = {setRouteToLogin}
+        createNewUser = {createNewUser}
+        setCreateNewUser = {setCreateNewUser}
+        loginEmailIsTaken = {loginEmailIsTaken}
+        setLoginEmailIsTaken = {setLoginEmailIsTaken}
+          
         />
       ) : loginType === "guest" ? (
         <Guest />
