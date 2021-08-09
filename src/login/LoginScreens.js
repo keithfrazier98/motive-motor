@@ -39,8 +39,6 @@ function LoginScreens({
     }
   }, [loggedIn, loginFormInfo]);
 
-  console.log("loginscreens", loggedIn, loginType);
-
   return (
     <>
       {loginType === "existing" || loginType === "new" || "social-media" ? (

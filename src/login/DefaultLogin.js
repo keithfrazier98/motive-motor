@@ -137,16 +137,9 @@ function DefaultLogin({
   }
 
   async function checkForReturningUser(submitType) {
-    console.log(
-      "checkforexistinguser",
-      submitType,
-      socialMediaLoginData,
-      loginFormInfo
-    );
     const abortController = new AbortController();
     let validationKey;
     let validationType;
-    console.log(loginType, "in checking for returning user");
     if (loginType === "social-media") {
       switch (socialMediaLoginData.type) {
         case "facebook":
@@ -169,12 +162,6 @@ function DefaultLogin({
     await isExistingUser(validationType, validationKey, abortController.signal)
       .then((response) => {
         setLoginEmailIsTaken(true);
-        /*if (socialMediaLoginData) {
-          console.log(true, socialMediaLoginData, loginType, loginFormInfo);
-        } else {
-          console.log(false, socialMediaLoginData, loginType, loginFormInfo);
-        }*/
-
         if (
           !socialMediaLoginData &&
           response.password === loginFormInfo.password &&
@@ -214,16 +201,8 @@ function DefaultLogin({
 
   const submitLogin = (event) => {
     //the "login" button is the only button that will call submit login with an event
-    console.log(
-      "submitLogin",
-      loginFormInfo,
-      loginType,
-      socialMediaLoginData,
-      createNewUser
-    );
     if (event && event.target.id === "login-form") {
       event.preventDefault();
-      console.log(event.target.id);
       const validEmail = EmailValidator.validate(loginFormInfo.email);
       if (validEmail) {
         checkForReturningUser("existing");

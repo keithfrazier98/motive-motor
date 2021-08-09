@@ -37,6 +37,7 @@ function LogInWithSocialMedia({
 
   const responseFacebook = (response) => {
     preliminary();
+    console.log(response)
     const { id } = response;
     setSocialMediaLoginData({ type: "facebook", id: id });
     setLoginType("social-media")
