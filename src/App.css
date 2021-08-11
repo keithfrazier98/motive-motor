@@ -77,3 +77,7 @@ button{
 .grid-container{
     padding:0
 }
+
+.roundedCorners{
+    border-radius: 3px;
+}

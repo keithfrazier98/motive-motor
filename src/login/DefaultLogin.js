@@ -14,6 +14,7 @@ import * as EmailValidator from "email-validator";
 import BackToLoginBtn from "./BackToLoginBtn.js";
 import HandleThemeChange from "../common/HandleThemeChange.js";
 import CheckForReturningUser from "./CheckForReturningUser.js";
+import DefaultLoginFields from "./DefaultLoginFields.js";
 
 function DefaultLogin({
   loginFormInfo,
@@ -50,11 +51,9 @@ function DefaultLogin({
   setLoginEmailIsTaken,
   userData,
   setUserData,
-  fetchError, 
-  setFetchError
+  fetchError,
+  setFetchError,
 }) {
-  const roundedCorners = { borderRadius: "3px" };
-
   useEffect(() => {
     setLoginType("existing");
   }, []);
@@ -76,39 +75,6 @@ function DefaultLogin({
     if (loginType === "social-media") submitLogin();
   }, [loginType]);
 
-  const handleShowPassword = (event) => {
-    event.preventDefault();
-    setShowPassword(!showPassword);
-    if (!showPassword) {
-      setPasswordInputType("text");
-    } else {
-      setPasswordInputType("password");
-    }
-  };
-
-  function handleChange({ target: { id, value } }) {
-    if (routeToLogin || emailError || loginEmailIsTaken) {
-      setRouteToLogin(false);
-      setEmailError(false);
-      setLoginEmailIsTaken(false);
-    }
-    switch (loginType) {
-      case "existing":
-        setLoginFormInfo({ ...loginFormInfo, [id]: value });
-        break;
-      case "new":
-        setLoginFormInfo({ ...loginFormInfo, [id]: value });
-        setNewUserProfileInfo({
-          ...newUserProfileInfo,
-          ...loginFormInfo,
-          [id]: value,
-        });
-        break;
-      default:
-        break;
-    }
-  }
-
   const returningCheckDependencies = {
     loginType: loginType,
     socialMediaLoginData: socialMediaLoginData,
@@ -121,11 +87,11 @@ function DefaultLogin({
     emailError: emailError,
     loginEmailIsTaken: loginEmailIsTaken,
     setLoginType: setLoginType,
-    setUserData: setUserData
+    setUserData: setUserData,
   };
 
   const submitLogin = (event) => {
-    console.log(socialMediaLoginData)
+    console.log(socialMediaLoginData);
 
     //the "login" button is the only button that will call submit login with an event
     if (event && event.target.id === "login-form") {
@@ -194,80 +160,18 @@ function DefaultLogin({
         >
           <div className="cell small-11 medium-4 large-3" style={{ zIndex: 1 }}>
             <div>
-              <ErrorMessage error={fetchError}/>
+              <ErrorMessage error={fetchError} />
             </div>
             <div className="grid-x align-center">
               <h2 className="loginH2">Welcome!</h2>
               <img src={logo200} alt="motive-motor-logo" width="150px" />
+              <p>
+                {loginType === "new"
+                  ? "Let's get signed up:"
+                  : "Let's get logged in:"}
+              </p>
             </div>
             <form id="login-form" onSubmit={submitLogin} className="loginForm">
-              <div className="grid-container">
-                <p>
-                  {loginType === "new"
-                    ? "Let's get signed up:"
-                    : "Let's get logged in:"}
-                </p>
-                <div>
-                  <div className="grid-x align-middle align-center grid-margin-x">
-                    <div className="cell medium-12">
-                      <label htmlFor="username">Email:</label>
-                      <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        placeholder="rickyBobby@email.com"
-                        required
-                        value={loginFormInfo.email}
-                        onChange={handleChange}
-                      />
-                    </div>
-                    <div className="cell small-10">
-                      <label htmlFor="password">Password:</label>
-                      <input
-                        id="password"
-                        name="password"
-                        type={passwordInputType}
-                        placeholder="password"
-                        required
-                        minLength="8"
-                        autoComplete="current-password"
-                        value={loginFormInfo.password}
-                        onChange={handleChange}
-                      />
-                    </div>
-                    <div className={`cell small-2`}>
-                      <button
-                        className={`button eye ${theme.btnColor}`}
-                        onClick={handleShowPassword}
-                        style={roundedCorners}
-                      >
-                        {showPassword ? (
-                          <ion-icon name="eye-off"></ion-icon>
-                        ) : (
-                          <ion-icon name="eye-outline"></ion-icon>
-                        )}
-                      </button>
-                    </div>
-                    {loginType === "new" ? (
-                      <NewUser
-                        loading={loading}
-                        setLoading={setLoading}
-                        loginFormInfo={loginFormInfo}
-                        theme={theme}
-                        setTheme={setTheme}
-                        theme_id={theme_id}
-                        setThemeId={setThemeId}
-                        newUserProfileInfo={newUserProfileInfo}
-                        setNewUserProfileInfo={setNewUserProfileInfo}
-                        newUserPreferences={newUserPreferences}
-                        setNewUserPreferences={setNewUserPreferences}
-                        handleChange={handleChange}
-                        loginEmailIsTaken={loginEmailIsTaken}
-                      />
-                    ) : null}
-                  </div>
-                </div>
-              </div>
               <div className="grid-x grid-margin-x grid-margin-y align-center text-center formButtons">
                 <>
                   {loginType === "social-media" && emailError ? (
@@ -283,7 +187,34 @@ function DefaultLogin({
                       theme={theme}
                     />
                   ) : (
-                    <ErrorMessage error={emailError} />
+                    <>
+                      <DefaultLoginFields
+                        loginFormInfo={loginFormInfo}
+                        passwordInputType={passwordInputType}
+                        theme={theme}
+                        showPassword={showPassword}
+                        loginType={loginType}
+                        loading={loading}
+                        setLoading={setLoading}
+                        setTheme={setTheme}
+                        newUserProfileInfo={newUserProfileInfo}
+                        setNewUserProfileInfo={setNewUserProfileInfo}
+                        newUserPreferences={newUserPreferences}
+                        setNewUserPreferences={setNewUserPreferences}
+                        loginEmailIsTaken={loginEmailIsTaken}
+                        routeToLogin={routeToLogin}
+                        emailError={emailError}
+                        setLoginEmailIsTaken={setLoginEmailIsTaken}
+                        setEmailError={setEmailError}
+                        setRouteToLogin={setRouteToLogin}
+                        setLoginFormInfo={setLoginFormInfo}
+                        setThemeId={setThemeId}
+                        theme_id={theme_id}
+                        setShowPassword={setShowPassword}
+                        setPasswordInputType={setPasswordInputType}
+                      />
+                      <ErrorMessage error={emailError} />
+                    </>
                   )}
                 </>
                 {routeToLogin ? (
@@ -315,7 +246,6 @@ function DefaultLogin({
                     <button
                       type="button"
                       id="create_user"
-                      style={roundedCorners}
                       onClick={
                         loginEmailIsTaken || emailError
                           ? null
@@ -325,7 +255,7 @@ function DefaultLogin({
                         loginEmailIsTaken || emailError
                           ? "button disabled"
                           : "button"
-                      } ${theme.btnColor}`}
+                      } ${theme.btnColor} roundedCorners`}
                     >
                       submit
                     </button>
