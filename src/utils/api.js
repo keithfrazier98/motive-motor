@@ -50,7 +50,6 @@ async function fetchJson(url, options, onCancel) {
 }
 
 export async function isExistingUser(type,key, signal) {
-  console.log(type,key)
   const url = `${API_BASE_URL}/logins/validate?${type}=${key}`;
   return await fetchJson(url, { headers, signal }, []);
 }
@@ -63,6 +62,15 @@ export async function createNewUserAPI(newUserProfileInfo, newUserPreferences, s
     signal,
     body: JSON.stringify({data:{...newUserProfileInfo, ...newUserPreferences}}),
   };
-  return await fetchJson(url, options,[])
+  return await fetchJson(url, options, [])
 }
  
+export async function getUserProfile(id, signal){
+  const url = `${API_BASE_URL}/profiles/userdata?user_id=${id}`
+  return await fetchJson(url, {headers, signal}, [])
+}
+
+export async function testConnection(signal){
+  const url = `${API_BASE_URL}/test`
+  return await fetchJson(url, {headers, signal}, [])
+}

@@ -2,20 +2,19 @@ import React, { useState } from "react";
 import AppRoutes from "./AppRoutes";
 
 // AppStates is called to render by app.js
-// 
+//
 
 function AppStates() {
+  //loading and errors (x3)
+  const [loading, setLoading] = useState(false);
+  const [emailError, setEmailError] = useState("");
+  const [fetchError, setFetchError] = useState("");
+
+  //forms / settings / data (x4)
   const [loginFormInfo, setLoginFormInfo] = useState({
     email: "",
     password: "",
   });
-  const [returningUserIsValidated, setReturningUserIsValidated] =
-    useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [passwordInputType, setPasswordInputType] = useState("password");
-  const [theme_id, setThemeId] = useState("sunset");
-  const [loading, setLoading] = useState(false);
-  const [emailError, setEmailError] = useState("");
   const [theme, setTheme] = useState({
     bkgd: "",
     fontColor: "",
@@ -25,17 +24,29 @@ function AppStates() {
     navBkgd: "",
     container: "",
   });
-  const [loginType, setLoginType] = useState("existing");
-  const [socialMediaLoginData, setSocialMediaLoginData] = useState(false);
   const [newUserProfileInfo, setNewUserProfileInfo] = useState({
     first_name: "",
     last_name: "",
   });
-  const [newUserPreferences, setNewUserPreferences] = useState({ theme_id: "" });
+  const [theme_id, setThemeId] = useState("bw");
+
+  //login dependancy states (x10)
+  const [returningUserIsValidated, setReturningUserIsValidated] =
+    useState(false);
+  const [loginType, setLoginType] = useState("existing");
+  const [showPassword, setShowPassword] = useState(false);
+  const [passwordInputType, setPasswordInputType] = useState("password");
+  const [socialMediaLoginData, setSocialMediaLoginData] = useState(false);
+  const [newUserPreferences, setNewUserPreferences] = useState({
+    theme_id: "",
+  });
   const [loggedIn, setLoggedIn] = useState(false);
   const [routeToLogin, setRouteToLogin] = useState(false);
   const [createNewUser, setCreateNewUser] = useState(false);
   const [loginEmailIsTaken, setLoginEmailIsTaken] = useState(false);
+
+  //dashboard dependancy states (x1)
+  const [userData, setUserData] = useState(false);
 
   return (
     <>
@@ -66,13 +77,16 @@ function AppStates() {
         setLoggedIn={setLoggedIn}
         newUserPreferences={newUserPreferences}
         setNewUserPreferences={setNewUserPreferences}
-        routeToLogin = {routeToLogin}
-        setRouteToLogin = {setRouteToLogin}
-        createNewUser = {createNewUser}
-        setCreateNewUser = {setCreateNewUser}
-        loginEmailIsTaken = {loginEmailIsTaken}
-        setLoginEmailIsTaken = {setLoginEmailIsTaken}
-        
+        routeToLogin={routeToLogin}
+        setRouteToLogin={setRouteToLogin}
+        createNewUser={createNewUser}
+        setCreateNewUser={setCreateNewUser}
+        loginEmailIsTaken={loginEmailIsTaken}
+        setLoginEmailIsTaken={setLoginEmailIsTaken}
+        userData={userData}
+        setUserData={setUserData}
+        fetchError = {fetchError}
+        setFetchError = {setFetchError}
       />
     </>
   );

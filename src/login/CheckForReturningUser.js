@@ -1,24 +1,28 @@
-import {isExistingUser} from "../utils/api.js"
+import { isExistingUser } from "../utils/api.js";
 
-// dedicated function for handling submission of API calls 
+// dedicated function for handling submission of API calls
 // takes the submission type (loginType) and a collection of states as an object
 async function CheckForReturningUser(
   submitType,
-  {loginType,
-  socialMediaLoginData,
-  loginFormInfo,
-  setLoginEmailIsTaken,
-  setReturningUserIsValidated,
-  setLoggedIn,
-  setRouteToLogin,
-  setEmailError,
-  emailError,
-  loginEmailIsTaken,
-  setLoginType}
+  {
+    loginType,
+    socialMediaLoginData,
+    loginFormInfo,
+    setLoginEmailIsTaken,
+    setReturningUserIsValidated,
+    setLoggedIn,
+    setRouteToLogin,
+    setEmailError,
+    emailError,
+    loginEmailIsTaken,
+    setLoginType,
+    setUserData,
+  }
 ) {
   const abortController = new AbortController();
   let validationKey;
   let validationType;
+  console.log(socialMediaLoginData)
   if (loginType === "social-media") {
     switch (socialMediaLoginData.type) {
       case "facebook":
@@ -40,6 +44,7 @@ async function CheckForReturningUser(
 
   await isExistingUser(validationType, validationKey, abortController.signal)
     .then((response) => {
+      setUserData({login:response});
       setLoginEmailIsTaken(true);
       if (
         !socialMediaLoginData &&

@@ -37,6 +37,10 @@ export default function AppRoutes({
   setCreateNewUser,
   loginEmailIsTaken,
   setLoginEmailIsTaken,
+  userData,
+  setUserData,
+  fetchError, 
+  setFetchError
 }) {
   return (
     <Switch>
@@ -71,16 +75,20 @@ export default function AppRoutes({
           setNewUserPreferences={setNewUserPreferences}
           loggedIn={loggedIn}
           setLoggedIn={setLoggedIn}
-          routeToLogin = {routeToLogin}
-        setRouteToLogin = {setRouteToLogin}
-        createNewUser = {createNewUser}
-        setCreateNewUser = {setCreateNewUser}
-        loginEmailIsTaken = {loginEmailIsTaken}
-        setLoginEmailIsTaken = {setLoginEmailIsTaken}
+          routeToLogin={routeToLogin}
+          setRouteToLogin={setRouteToLogin}
+          createNewUser={createNewUser}
+          setCreateNewUser={setCreateNewUser}
+          loginEmailIsTaken={loginEmailIsTaken}
+          setLoginEmailIsTaken={setLoginEmailIsTaken}
+          userData={userData}
+          setUserData={setUserData}
+          fetchError={fetchError}
+          setFetchError={setFetchError}
         />
       </Route>
       <Route path="/dashboard">
-        <Dashboard />
+        <Dashboard userData={userData} loading={setLoading} />
       </Route>
     </Switch>
   );

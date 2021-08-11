@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom"
 
 function DefaultLoginBtns({
   theme,
@@ -6,6 +7,8 @@ function DefaultLoginBtns({
   setLoginType,
 }) {
   const roundedCorners = { borderRadius: "3px" };
+
+
 
   return (
     <>
@@ -26,7 +29,6 @@ function DefaultLoginBtns({
           type="button"
           style={roundedCorners}
           onClick={() => {
-            console.log("setting new user to true")
             setCreateNewUser(true);
           }}
         >
@@ -34,6 +36,7 @@ function DefaultLoginBtns({
         </button>
       </div>
       <div className="cell small-4">
+       
         <button
           className={`button ${theme.btnColor}`}
           id="guest"
@@ -41,7 +44,7 @@ function DefaultLoginBtns({
           style={roundedCorners}
           onClick={() => setLoginType("guest")}
         >
-          guest
+          <Link style={{color:"white"}} to={"/dashboard/guest"}>guest</Link>
         </button>
       </div>
     </>

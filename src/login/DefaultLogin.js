@@ -48,9 +48,16 @@ function DefaultLogin({
   setCreateNewUser,
   loginEmailIsTaken,
   setLoginEmailIsTaken,
+  userData,
+  setUserData,
+  fetchError, 
+  setFetchError
 }) {
-  
   const roundedCorners = { borderRadius: "3px" };
+
+  useEffect(() => {
+    setLoginType("existing");
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -104,7 +111,7 @@ function DefaultLogin({
 
   const returningCheckDependencies = {
     loginType: loginType,
-    ocialMediaLoginData: socialMediaLoginData,
+    socialMediaLoginData: socialMediaLoginData,
     loginFormInfo: loginFormInfo,
     setLoginEmailIsTaken: setLoginEmailIsTaken,
     setReturningUserIsValidated: setReturningUserIsValidated,
@@ -114,9 +121,12 @@ function DefaultLogin({
     emailError: emailError,
     loginEmailIsTaken: loginEmailIsTaken,
     setLoginType: setLoginType,
+    setUserData: setUserData
   };
 
   const submitLogin = (event) => {
+    console.log(socialMediaLoginData)
+
     //the "login" button is the only button that will call submit login with an event
     if (event && event.target.id === "login-form") {
       event.preventDefault();
@@ -155,7 +165,16 @@ function DefaultLogin({
           newUserPreferences,
           abortController.signal
         )
-          .then(setLoggedIn(true))
+          .then((res) => {
+            setUserData(res);
+            setNewUserPreferences({});
+            setNewUserProfileInfo({});
+          })
+          .then(() => {
+            setLoggedIn(true);
+            setReturningUserIsValidated(true);
+            setLoading(true);
+          })
           .catch((res) => {
             setEmailError(res);
           });
@@ -174,6 +193,9 @@ function DefaultLogin({
           style={{ height: "100%" }}
         >
           <div className="cell small-11 medium-4 large-3" style={{ zIndex: 1 }}>
+            <div>
+              <ErrorMessage error={fetchError}/>
+            </div>
             <div className="grid-x align-center">
               <h2 className="loginH2">Welcome!</h2>
               <img src={logo200} alt="motive-motor-logo" width="150px" />

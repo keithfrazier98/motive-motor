@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import DefaultLogin from "./DefaultLogin";
 import FourOFour from "./FourOFour";
-import Guest from "./Guest";
+import { getUserProfile, testConnection } from "../utils/api";
 
 function LoginScreens({
   loginFormInfo,
@@ -37,11 +37,23 @@ function LoginScreens({
   setCreateNewUser,
   loginEmailIsTaken,
   setLoginEmailIsTaken,
+  userData,
+  setUserData,
+  fetchError,
+  setFetchError,
 }) {
+  useEffect(() => {
+    testConnection().then(setFetchError(false)).catch(setFetchError);
+  }, []);
+
   const history = useHistory();
   useEffect(() => {
     if (loggedIn === true && loginFormInfo) {
-      history.push("./dashboard");
+      const abortController = new AbortController();
+      getUserProfile(userData.login.user_id, abortController.signal)
+        .then(setUserData)
+        .catch(setFetchError)
+        .then(history.push(`./dashboard`));
     }
   }, [loggedIn, loginFormInfo]);
 
@@ -75,16 +87,17 @@ function LoginScreens({
           setLoggedIn={setLoggedIn}
           newUserProfileInfo={newUserProfileInfo}
           setNewUserProfileInfo={setNewUserProfileInfo}
-          routeToLogin = {routeToLogin}
-        setRouteToLogin = {setRouteToLogin}
-        createNewUser = {createNewUser}
-        setCreateNewUser = {setCreateNewUser}
-        loginEmailIsTaken = {loginEmailIsTaken}
-        setLoginEmailIsTaken = {setLoginEmailIsTaken}
-          
+          routeToLogin={routeToLogin}
+          setRouteToLogin={setRouteToLogin}
+          createNewUser={createNewUser}
+          setCreateNewUser={setCreateNewUser}
+          loginEmailIsTaken={loginEmailIsTaken}
+          setLoginEmailIsTaken={setLoginEmailIsTaken}
+          userData={userData}
+          setUserData={setUserData}
+          fetchError={fetchError}
+          setFetchError={setFetchError}
         />
-      ) : loginType === "guest" ? (
-        <Guest />
       ) : (
         <FourOFour />
       )}
