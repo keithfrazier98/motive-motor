@@ -34,8 +34,8 @@ function SignUpWithSocialMediaMessage({
     <div className="cell small-12 callout primary" style={{ zIndex: 2 }}>
       <h4
         style={{ fontSize: "1rem" }}
-      >{`This ${type} account is not signed up with Motive Motor`}</h4>
-      <p>{`Would you like to create a new Motive Motor with your ${type} account?`}</p>
+      >{`Your ${type} account is not signed up with Motive Motor`}</h4>
+      <p>{`Would you like to sign up with Motive Motor with your ${type} account?`}</p>
       <BackToLoginBtn
         setLoginType={setLoginType}
         setEmailError={setEmailError}
