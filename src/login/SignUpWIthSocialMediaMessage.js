@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import BackToLoginBtn from "./BackToLoginBtn";
+import BackToLoginBtn from "./NewUserBtns";
 
 function SignUpWithSocialMediaMessage({
   socialMediaLoginData,
@@ -23,7 +23,6 @@ function SignUpWithSocialMediaMessage({
   }, [socialMediaLoginData]);
 
   const newUserWithSocialMedia = () => {
-    setCreateNewUser(true);
     setEmailError(false);
     setNewUserProfileInfo(socialMediaLoginData);
     setNewUserPreferences({ ["theme_id"]: theme_id });

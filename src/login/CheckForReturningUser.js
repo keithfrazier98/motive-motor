@@ -22,7 +22,6 @@ async function CheckForReturningUser(
   const abortController = new AbortController();
   let validationKey;
   let validationType;
-  console.log(socialMediaLoginData)
   if (loginType === "social-media") {
     switch (socialMediaLoginData.type) {
       case "facebook":

@@ -8,7 +8,6 @@ function Dashboard({ userData }) {
         if(!userData){
             history.push("/login")
         }
-        console.log(userData)
     })
 
   return (

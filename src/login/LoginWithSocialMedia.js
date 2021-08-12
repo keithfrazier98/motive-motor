@@ -23,8 +23,9 @@ function LogInWithSocialMedia({
 
   const responseGoogle = (response) => {
     preliminary();
-    const { email } = response.profileObj;
-    setSocialMediaLoginData({ type: "google", email: email });
+    console.log(response.profileObj)
+    const { email, familyName, givenName } = response.profileObj;
+    setSocialMediaLoginData({ type: "google", email: email, first_name:givenName, last_name:familyName });
     setLoginType("social-media");
   };
 
@@ -44,7 +45,7 @@ function LogInWithSocialMedia({
 
   return (
     <>
-      <div className="cell small-12">
+      <div className="cell small-12" style={{margin:"30px 0 0 0"}}>
         <GoogleLogin
           clientId="659209002109-g9b7na56k40o4a8dvfs1nim8sg4e3qo5.apps.googleusercontent.com"
           render={(renderProps) => (
@@ -69,7 +70,7 @@ function LogInWithSocialMedia({
           //isSignedIn={true}
         />
       </div>
-      <div className="cell small-w">
+      <div className="cell small-12">
         <FacebookLogin
           appId="244836170795402"
           autoLoad={true}
