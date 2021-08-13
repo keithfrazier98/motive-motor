@@ -15,7 +15,6 @@ function SignUpWithSocialMediaMessage({
   let { type } = socialMediaLoginData;
   useEffect(() => {
     if (socialMediaLoginData) {
-      //there is obviously something wrong going on here
       type = socialMediaLoginData.type;
     } else {
       type = "user";
@@ -24,9 +23,10 @@ function SignUpWithSocialMediaMessage({
 
   const newUserWithSocialMedia = () => {
     setEmailError(false);
+    console.log(socialMediaLoginData)
     setNewUserProfileInfo(socialMediaLoginData);
     setNewUserPreferences({ ["theme_id"]: theme_id });
-    submitCreateNewUserAPI();
+    setCreateNewUser(true)
   };
 
   return (

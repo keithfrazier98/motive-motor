@@ -49,8 +49,10 @@ async function fetchJson(url, options, onCancel) {
   }
 }
 
-export async function isExistingUser(type,key, signal) {
-  const url = `${API_BASE_URL}/logins/validate?${type}=${key}`;
+export async function isExistingUser(type, userLoginKey, password, signal) {
+  //userLoginKey will be an email (for google and regular logins) or an id # (for fb users)
+  //pass be password from form or null
+  const url = `${API_BASE_URL}/logins/validate?${type}=${userLoginKey}&pass=${password}`;
   return await fetchJson(url, { headers, signal }, []);
 }
 

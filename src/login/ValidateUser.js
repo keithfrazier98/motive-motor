@@ -2,7 +2,7 @@ import { isExistingUser } from "../utils/api.js";
 
 // dedicated function for handling submission of API calls
 // takes the submission type (loginType) and a collection of states as an object
-async function CheckForReturningUser(
+async function validateUser(
   submitType,
   {
     loginType,
@@ -22,15 +22,17 @@ async function CheckForReturningUser(
   const abortController = new AbortController();
   let validationKey;
   let validationType;
+  let pass = null
+  const {type, id, email} = socialMediaLoginData
   if (loginType === "social-media") {
-    switch (socialMediaLoginData.type) {
+    switch (type) {
       case "facebook":
         validationType = "fb_login_id";
-        validationKey = socialMediaLoginData.id;
+        validationKey = id;
         break;
       case "google":
-        validationType = "email";
-        validationKey = socialMediaLoginData.email;
+        validationType = "google";
+        validationKey = email;
         break;
       default:
         console.error("default social media login submission was called");
@@ -39,16 +41,32 @@ async function CheckForReturningUser(
   } else {
     validationType = "email";
     validationKey = loginFormInfo.email;
+    pass = loginFormInfo.password
+
   }
 
-  await isExistingUser(validationType, validationKey, abortController.signal)
+  await isExistingUser(validationType, validationKey, pass, abortController.signal)
     .then((response) => {
-      setUserData({login:response});
+      setUserData({ login: response });
       setLoginEmailIsTaken(true);
-      if (
-        !socialMediaLoginData &&
-        response.password === loginFormInfo.password &&
-        submitType === "existing"
+      setReturningUserIsValidated(true)
+      setLoggedIn(true)
+    })
+    .catch((res) => {
+      if (submitType !== "new") {
+        setEmailError(res);
+      } else {
+        setLoginType("new");
+      }
+    });
+}
+
+export default validateUser;
+/* if (
+        (!socialMediaLoginData &&
+          response.password === loginFormInfo.password &&
+          submitType === "existing") ||
+        submitType === "guest"
       ) {
         setReturningUserIsValidated(true);
         setLoggedIn(true);
@@ -72,14 +90,4 @@ async function CheckForReturningUser(
       else if (submitType === "new" && !emailError && !loginEmailIsTaken) {
         setRouteToLogin(true);
       }
-    })
-    .catch((res) => {
-      if (submitType !== "new") {
-        setEmailError(res);
-      } else {
-        setLoginType("new");
-      }
-    });
-}
-
-export default CheckForReturningUser;
+    */

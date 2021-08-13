@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import DefaultLoginFields from "./DefaultLoginFields";
 import NewUserBtns from "./NewUserBtns";
 import ErrorMessage from "../common/ErrorMessage";
+import ReturningUserMessage from "./ReturningUserMessage";
 function NewUser({
   loading,
   setLoading,
@@ -29,6 +30,9 @@ function NewUser({
   setShowPassword,
   setPasswordInputType,
   setCreateNewUser,
+  returningUserIsValidated, 
+  setReturningUserIsValidated,
+  setLoggedIn
 }) {
   useEffect(() => {
     setNewUserProfileInfo({ ...loginFormInfo, ...newUserProfileInfo });
@@ -98,12 +102,25 @@ function NewUser({
           setLoginType={setLoginType}
           theme={theme}
           loginType={loginType}
+          setCreateNewUser={setCreateNewUser}
         />
       </>
     </>
   );
 
-  return loginType === "new" ? pageContent : null;
+
+  {}
+  return routeToLogin ? (
+    <ReturningUserMessage
+      returningUserIsValidated={returningUserIsValidated}
+      setReturningUserIsValidated={setReturningUserIsValidated}
+      setLoginType={setLoginType}
+      setLoading={setLoading}
+      setLoggedIn={setLoggedIn}
+      setEmailError={setEmailError}
+      setRouteToLogin={setRouteToLogin}
+    />
+  ) : loginType === "new" ? pageContent : null;
 }
 
 export default NewUser;

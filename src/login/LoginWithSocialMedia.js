@@ -23,7 +23,6 @@ function LogInWithSocialMedia({
 
   const responseGoogle = (response) => {
     preliminary();
-    console.log(response.profileObj)
     const { email, familyName, givenName } = response.profileObj;
     setSocialMediaLoginData({ type: "google", email: email, first_name:givenName, last_name:familyName });
     setLoginType("social-media");
@@ -38,8 +37,8 @@ function LogInWithSocialMedia({
 
   const responseFacebook = (response) => {
     preliminary();
-    const { id } = response;
-    setSocialMediaLoginData({ type: "facebook", id: id });
+    const { id, first_name, last_name } = response;
+    setSocialMediaLoginData({ type: "facebook", id: id, first_name:first_name, last_name:last_name });
     setLoginType("social-media")
   };
 

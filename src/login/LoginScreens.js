@@ -11,7 +11,7 @@ import NewUser from "./NewUser.js";
 import logo200 from "../images/logo200.png";
 import LogInWithSocialMedia from "./LoginWithSocialMedia.js";
 import * as EmailValidator from "email-validator";
-import CheckForReturningUser from "./CheckForReturningUser.js";
+import validateUser from "./ValidateUser.js";
 import { createNewUserAPI } from "../utils/api.js";
 
 function LoginScreens({
@@ -62,8 +62,9 @@ function LoginScreens({
       const abortController = new AbortController();
       getUserProfile(userData.login.user_id, abortController.signal)
         .then(setUserData)
+        .then(console.log(userData))
+        .then(history.push(`./dashboard?user_id=${userData.login.user_id}`))
         .catch(setFetchError)
-        .then(history.push(`./dashboard`));
     }
   }, [loggedIn, loginFormInfo]);
 
@@ -112,7 +113,7 @@ function LoginScreens({
       if (!fetchError) {
         const validEmail = EmailValidator.validate(loginFormInfo.email);
         if (validEmail) {
-          CheckForReturningUser("existing", returningCheckDependencies);
+          validateUser("existing", returningCheckDependencies);
         } else {
           setRouteToLogin(false);
           setEmailError({ message: "Incorrect email format" });
@@ -122,14 +123,17 @@ function LoginScreens({
       switch (loginType) {
         // user selected "new user"
         case "new":
-          CheckForReturningUser("new", returningCheckDependencies);
+          validateUser("new", returningCheckDependencies);
           //submitCreateNewUserAPI();
           break;
         case "existing":
-          CheckForReturningUser("existing", returningCheckDependencies);
+          validateUser("existing", returningCheckDependencies);
           break;
         case "social-media":
-          CheckForReturningUser("social-media", returningCheckDependencies);
+          validateUser("social-media", returningCheckDependencies);
+          break;
+        case "guest":
+          validateUser("guest", returningCheckDependencies);
           break;
         default:
           console.log("switch on login failed");
@@ -257,22 +261,13 @@ function LoginScreens({
                       setShowPassword={setShowPassword}
                       setPasswordInputType={setPasswordInputType}
                       setCreateNewUser={setCreateNewUser}
+                      returningUserIsValidated={returningUserIsValidated}
+                      setReturningUserIsValidated={setReturningUserIsValidated}
+                      setLoggedIn={setLoggedIn}
                     />
                   </div>
                 </div>
               </div>
-
-              {routeToLogin ? (
-                <ReturningUserMessage
-                  returningUserIsValidated={returningUserIsValidated}
-                  setReturningUserIsValidated={setReturningUserIsValidated}
-                  setLoginType={setLoginType}
-                  setLoading={setLoading}
-                  setLoggedIn={setLoggedIn}
-                  setEmailError={setEmailError}
-                  setRouteToLogin={setRouteToLogin}
-                />
-              ) : null}
             </div>
           </form>
           <div className="grid-x">

@@ -60,13 +60,24 @@ function DefaultLogin({
   }, [theme_id, setLoading]);
 
   useEffect(() => {
-    if (createNewUser) {
+
+    if(createNewUser && loginType !== "existing"){
+      submitCreateNewUserAPI()
+    } 
+
+     else if (createNewUser) {
       submitLogin();
     }
+
+
   }, [createNewUser]);
 
   useEffect(() => {
-    if (loginType === "social-media") submitLogin();
+    if (loginType === "social-media") {
+      submitLogin();
+    } else if (loginType === "guest") {
+      submitLogin();
+    }
   }, [loginType]);
 
   const createPageContent = () => {
@@ -115,14 +126,15 @@ function DefaultLogin({
               setLoginType={setLoginType}
             />
             <ErrorMessage error={emailError} />
+            <DefaultLoginBtns
+              theme={theme}
+              setCreateNewUser={setCreateNewUser}
+              setLoginType={setLoginType}
+              fetchError={fetchError}
+              setLoginFormInfo={setLoginFormInfo}
+            />
           </>
         )}
-        <DefaultLoginBtns
-          theme={theme}
-          setCreateNewUser={setCreateNewUser}
-          setLoginType={setLoginType}
-          fetchError={fetchError}
-        />
       </>
     );
   };

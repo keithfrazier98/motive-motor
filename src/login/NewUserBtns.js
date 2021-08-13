@@ -8,6 +8,7 @@ function NewUserBtns({
   emailError,
   submitCreateNewUserAPI,
   loginType,
+  setCreateNewUser
 }) {
   const newUserBtns = (
     <>
@@ -31,7 +32,7 @@ function NewUserBtns({
             id="create_user"
             style={{ margin: "0" }}
             onClick={
-              loginEmailIsTaken || emailError ? null : submitCreateNewUserAPI
+              loginEmailIsTaken || emailError ? null : () => {setCreateNewUser(true)}
             }
             className={`${
               loginEmailIsTaken || emailError ? "button disabled" : "button"

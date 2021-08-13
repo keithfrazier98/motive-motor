@@ -6,6 +6,7 @@ function DefaultLoginBtns({
   setCreateNewUser,
   setLoginType,
   fetchError,
+  setLoginFormInfo
 }) {
   const roundedCorners = { borderRadius: "3px" };
 
@@ -45,11 +46,20 @@ function DefaultLoginBtns({
           id="guest"
           type="button"
           style={roundedCorners}
-          onClick={() => (fetchError ? null : setLoginType("guest"))}
+          onClick={
+            fetchError
+              ? null
+              : () => {
+                  setLoginFormInfo({
+                    email: "guest@guest.com",
+                    password: "guest123",
+                  });
+
+                  setLoginType("guest");
+                }
+          }
         >
-          <Link style={{ color: "white" }} to={"/dashboard/guest"}>
-            guest
-          </Link>
+          guest
         </button>
       </div>
     </>
