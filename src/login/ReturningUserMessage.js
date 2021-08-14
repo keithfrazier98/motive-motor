@@ -44,13 +44,8 @@ function ReturningUserMessage({
             type="button"
             style={{ margin: "0 10px 0 0" }}
             onClick={() => {
-                if(returningUserIsValidated){
                   setLoggedIn(true);
-                } else {
-                  setLoginType("existing")
-                  setEmailError({message:"Incorrect password"})
-                  setRouteToLogin(false)
-                }
+                
             }}
           >
             Yes!

@@ -28,6 +28,9 @@ function AppStates() {
     first_name: "",
     last_name: "",
   });
+  const [newUserPreferences, setNewUserPreferences] = useState({
+    theme_id: "",
+  });
   const [theme_id, setThemeId] = useState("bw");
 
   //login dependancy states (x10)
@@ -37,9 +40,7 @@ function AppStates() {
   const [showPassword, setShowPassword] = useState(false);
   const [passwordInputType, setPasswordInputType] = useState("password");
   const [socialMediaLoginData, setSocialMediaLoginData] = useState(false);
-  const [newUserPreferences, setNewUserPreferences] = useState({
-    theme_id: "",
-  });
+  
   const [loggedIn, setLoggedIn] = useState(false);
   const [routeToLogin, setRouteToLogin] = useState(false);
   const [createNewUser, setCreateNewUser] = useState(false);
@@ -48,6 +49,42 @@ function AppStates() {
   //dashboard dependancy states (x1)
   const [userData, setUserData] = useState(false);
 
+  function resetStates() {
+    setLoading(false);
+    setEmailError("");
+    setFetchError("");
+    setLoginFormInfo({
+      email: "",
+      password: "",
+    });
+    setTheme({
+      bkgd: "",
+      fontColor: "",
+      secBkgd: "",
+      btnColor: "",
+      headerBkgd: "",
+      navBkgd: "",
+      container: "",
+    });
+    setNewUserProfileInfo({
+      first_name: "",
+      last_name: "",
+    })
+    setNewUserPreferences({
+      theme_id: "",
+    })
+    setTheme("bw")
+    setReturningUserIsValidated(false)
+    setLoginType("existing")
+    setShowPassword(false)
+    setPasswordInputType("password")
+    setSocialMediaLoginData(false)
+    setLoggedIn(false)
+    setRouteToLogin(false)
+    setCreateNewUser(false)
+    setLoginEmailIsTaken(false)
+
+  }
   return (
     <>
       <AppRoutes
@@ -85,9 +122,9 @@ function AppStates() {
         setLoginEmailIsTaken={setLoginEmailIsTaken}
         userData={userData}
         setUserData={setUserData}
-        fetchError = {fetchError}
-        setFetchError = {setFetchError}
-        
+        fetchError={fetchError}
+        setFetchError={setFetchError}
+        resetStates={resetStates}
       />
     </>
   );

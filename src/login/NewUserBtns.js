@@ -8,15 +8,17 @@ function NewUserBtns({
   emailError,
   submitCreateNewUserAPI,
   loginType,
-  setCreateNewUser
+  setCreateNewUser,
+  resetStates
 }) {
   const newUserBtns = (
     <>
       <button
         type="button"
         onClick={() => {
-          setLoginType("existing");
-          setEmailError(false);
+          //setLoginType("existing");
+          //setEmailError(false);
+          resetStates()
         }}
         className={`button ${theme.btnColor}`}
         style={{ margin: "0 10px 0 0", borderRadius: "3px" }}

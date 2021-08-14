@@ -32,7 +32,8 @@ function NewUser({
   setCreateNewUser,
   returningUserIsValidated, 
   setReturningUserIsValidated,
-  setLoggedIn
+  setLoggedIn,
+  resetStates
 }) {
   useEffect(() => {
     setNewUserProfileInfo({ ...loginFormInfo, ...newUserProfileInfo });
@@ -103,6 +104,7 @@ function NewUser({
           theme={theme}
           loginType={loginType}
           setCreateNewUser={setCreateNewUser}
+          resetStates={resetStates}
         />
       </>
     </>
@@ -119,6 +121,7 @@ function NewUser({
       setLoggedIn={setLoggedIn}
       setEmailError={setEmailError}
       setRouteToLogin={setRouteToLogin}
+      resetStates={resetStates}
     />
   ) : loginType === "new" ? pageContent : null;
 }

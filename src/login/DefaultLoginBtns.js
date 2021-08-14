@@ -33,7 +33,7 @@ function DefaultLoginBtns({
               ? null
               : () => {
                   setCreateNewUser(true);
-                  setLoginType("new");
+                  //setLoginType("new");
                 }
           }
         >

@@ -40,7 +40,8 @@ export default function AppRoutes({
   userData,
   setUserData,
   fetchError, 
-  setFetchError
+  setFetchError,
+  resetStates
 }) {
   return (
     <Switch>
@@ -85,6 +86,7 @@ export default function AppRoutes({
           setUserData={setUserData}
           fetchError={fetchError}
           setFetchError={setFetchError}
+          resetStates={resetStates}
         />
       </Route>
       <Route path="/dashboard">

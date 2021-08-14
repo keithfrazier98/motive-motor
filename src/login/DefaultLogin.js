@@ -48,10 +48,11 @@ function DefaultLogin({
   submitCreateNewUserAPI,
   handleChange,
 }) {
+  /*
   useEffect(() => {
     setLoginType("existing");
   }, []);
-
+  */
   useEffect(() => {
     setLoading(true);
     HandleThemeChange(theme_id, setTheme)
@@ -59,6 +60,11 @@ function DefaultLogin({
       .then(setLoading(false));
   }, [theme_id, setLoading]);
 
+  useEffect(() => {
+    if(returningUserIsValidated){
+      setLoggedIn(true)
+    }
+  })
   useEffect(() => {
 
     if(createNewUser && loginType !== "existing"){

@@ -10,15 +10,14 @@ async function validateUser(
     loginFormInfo,
     setLoginEmailIsTaken,
     setReturningUserIsValidated,
-    setLoggedIn,
-    setRouteToLogin,
     setEmailError,
-    emailError,
-    loginEmailIsTaken,
-    setLoginType,
     setUserData,
+    setRouteToLogin, 
+    createNewUser,
+    loginEmailIsTaken
   }
 ) {
+
   const abortController = new AbortController();
   let validationKey;
   let validationType;
@@ -47,17 +46,15 @@ async function validateUser(
 
   await isExistingUser(validationType, validationKey, pass, abortController.signal)
     .then((response) => {
+      setLoginEmailIsTaken(true)
       setUserData({ login: response });
       setLoginEmailIsTaken(true);
+      loginType === "existing" && createNewUser === true ?
+      setRouteToLogin(true) :
       setReturningUserIsValidated(true)
-      setLoggedIn(true)
     })
     .catch((res) => {
-      if (submitType !== "new") {
         setEmailError(res);
-      } else {
-        setLoginType("new");
-      }
     });
 }
 

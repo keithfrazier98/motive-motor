@@ -51,6 +51,7 @@ function LoginScreens({
   setUserData,
   fetchError,
   setFetchError,
+  resetStates
 }) {
   useEffect(() => {
     testConnection().then(setFetchError(false)).catch(setFetchError);
@@ -91,29 +92,29 @@ function LoginScreens({
     }
   }
 
-  const returningCheckDependencies = {
+  const validateUserProps = {
     loginType: loginType,
     socialMediaLoginData: socialMediaLoginData,
     loginFormInfo: loginFormInfo,
     setLoginEmailIsTaken: setLoginEmailIsTaken,
     setReturningUserIsValidated: setReturningUserIsValidated,
+    returningUserIsValidated:returningUserIsValidated,
     setLoggedIn: setLoggedIn,
-    setRouteToLogin: setRouteToLogin,
     setEmailError: setEmailError,
-    emailError: emailError,
-    loginEmailIsTaken: loginEmailIsTaken,
-    setLoginType: setLoginType,
     setUserData: setUserData,
+    setRouteToLogin:setRouteToLogin,
+    createNewUser:createNewUser,
+    loginEmailIsTaken:loginEmailIsTaken,
   };
 
   const submitLogin = (event) => {
     //the "login" button is the only button that will call submit login with an event
-    if (event && event.target.id === "login-form") {
+    if (event) {
       event.preventDefault();
       if (!fetchError) {
         const validEmail = EmailValidator.validate(loginFormInfo.email);
         if (validEmail) {
-          validateUser("existing", returningCheckDependencies);
+          validateUser("existing", validateUserProps);
         } else {
           setRouteToLogin(false);
           setEmailError({ message: "Incorrect email format" });
@@ -123,17 +124,17 @@ function LoginScreens({
       switch (loginType) {
         // user selected "new user"
         case "new":
-          validateUser("new", returningCheckDependencies);
+          validateUser("new", validateUserProps);
           //submitCreateNewUserAPI();
           break;
         case "existing":
-          validateUser("existing", returningCheckDependencies);
+          validateUser("existing", validateUserProps);
           break;
         case "social-media":
-          validateUser("social-media", returningCheckDependencies);
+          validateUser("social-media", validateUserProps);
           break;
         case "guest":
-          validateUser("guest", returningCheckDependencies);
+          validateUser("guest", validateUserProps);
           break;
         default:
           console.log("switch on login failed");
@@ -232,6 +233,7 @@ function LoginScreens({
                       submitLogin={submitLogin}
                       submitCreateNewUserAPI={submitCreateNewUserAPI}
                       handleChange={handleChange}
+                      
                     />
 
                     <NewUser
@@ -264,6 +266,8 @@ function LoginScreens({
                       returningUserIsValidated={returningUserIsValidated}
                       setReturningUserIsValidated={setReturningUserIsValidated}
                       setLoggedIn={setLoggedIn}
+                      resetStates={resetStates}
+                      // pass to new user then pass to returning user message
                     />
                   </div>
                 </div>
