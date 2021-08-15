@@ -1,9 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function DefaultLoginBtns({
   theme,
-  setSubmitNewUser,
+  setCreateNewUser,
   setLoginType,
+  fetchError,
+  setLoginFormInfo
 }) {
   const roundedCorners = { borderRadius: "3px" };
 
@@ -11,7 +14,7 @@ function DefaultLoginBtns({
     <>
       <div className="cell small-4">
         <button
-          className={`button ${theme.btnColor}`}
+          className={`button ${theme.btnColor} ${fetchError ? "disabled" : ""}`}
           id="existing"
           type="submit"
           style={roundedCorners}
@@ -21,24 +24,40 @@ function DefaultLoginBtns({
       </div>
       <div className="cell small-4">
         <button
-          className={`button ${theme.btnColor}`}
+          className={`button ${theme.btnColor} ${fetchError ? "disabled" : ""}`}
           id="new"
           type="button"
           style={roundedCorners}
-          onClick={() => {
-            setSubmitNewUser(true);
-          }}
+          onClick={
+            fetchError
+              ? null
+              : () => {
+                  setCreateNewUser(true);
+                  //setLoginType("new");
+                }
+          }
         >
           new user
         </button>
       </div>
       <div className="cell small-4">
         <button
-          className={`button ${theme.btnColor}`}
+          className={`button ${theme.btnColor} ${fetchError ? "disabled" : ""}`}
           id="guest"
           type="button"
           style={roundedCorners}
-          onClick={() => setLoginType("guest")}
+          onClick={
+            fetchError
+              ? null
+              : () => {
+                  setLoginFormInfo({
+                    email: "guest@guest.com",
+                    password: "guest123",
+                  });
+
+                  setLoginType("guest");
+                }
+          }
         >
           guest
         </button>

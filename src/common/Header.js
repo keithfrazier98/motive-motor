@@ -8,7 +8,7 @@ export default function Header({ theme, setThemeId }) {
 
   return (
     <div
-      className={`grid-x align-right align-middle ${theme.fontColor}`}
+      className={`grid-x align-right align-middle ${theme.fontColor} ${theme.bkgd}`}
     >
       <div className="cell small-6 medium-9">
         <button

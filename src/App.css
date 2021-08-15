@@ -7,7 +7,9 @@
 
 }
 
-
+button{
+    border-radius: 3px;
+}
 
 
 .sunsetMainBkgd{
@@ -20,6 +22,7 @@
 
 .sunsetButton{
     background-color: #69585F;
+    border-radius: 3px;
 
 }
 
@@ -50,6 +53,8 @@
 
 .forestButton{
     background-color: #313B72;
+    border-radius: 3px;
+
 
 }
 
@@ -71,4 +76,8 @@
 
 .grid-container{
     padding:0
+}
+
+.roundedCorners{
+    border-radius: 3px;
 }

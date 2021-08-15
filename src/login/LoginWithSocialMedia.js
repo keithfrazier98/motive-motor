@@ -8,51 +8,88 @@ import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props
 
 function LogInWithSocialMedia({
   setSocialMediaLoginData,
-  setReturningUserIsValidated,
+  submitLogin,
+  setLoginFormInfo,
+  setLoginType,
+  setEmailError,
+  loginType,
 }) {
   const logout = () => {};
 
+  const preliminary = () => {
+    setLoginFormInfo({ email: "", password: "" });
+    setSocialMediaLoginData(false);
+  };
+
   const responseGoogle = (response) => {
-    setSocialMediaLoginData(response.profileObj);
-    setReturningUserIsValidated(true);
+    preliminary();
+    const { email, familyName, givenName } = response.profileObj;
+    setSocialMediaLoginData({ type: "google", email: email, first_name:givenName, last_name:familyName });
+    setLoginType("social-media");
+  };
+
+  const failureGoogle = () => {
+    setEmailError({
+      message:
+        "A problem occured when trying to login with google. Please try again.",
+    });
   };
 
   const responseFacebook = (response) => {
-    //setSocialMediaLoginData(response);
-    //setReturningUserIsValidated(true);
+    preliminary();
+    const { id, first_name, last_name } = response;
+    setSocialMediaLoginData({ type: "facebook", id: id, first_name:first_name, last_name:last_name });
+    setLoginType("social-media")
   };
 
   return (
     <>
-      <div className="cell small-12">
+      <div className="cell small-12" style={{margin:"30px 0 0 0"}}>
         <GoogleLogin
           clientId="659209002109-g9b7na56k40o4a8dvfs1nim8sg4e3qo5.apps.googleusercontent.com"
           render={(renderProps) => (
             <GoogleLoginButton
+              text={
+                loginType === "new"
+                  ? "Sign up with Google"
+                  : "Log in with Google"
+              }
               onClick={renderProps.onClick}
               disabled={renderProps.disabled}
             />
           )}
-          buttonText="Login"
-          onSuccess={responseGoogle}
-          onFailure={responseGoogle}
+          onSuccess={(response) => {
+            responseGoogle(response);
+          }}
+          onFailure={(response) => {
+            setLoginFormInfo({ email: "", password: "" });
+            failureGoogle(response);
+          }}
           cookiePolicy={"single_host_origin"}
           //isSignedIn={true}
         />
       </div>
-      <div className="cell small-w"><FacebookLogin
-        appId="244836170795402"
-        autoLoad={true}
-        fields="name,email,picture"
-        callback={responseFacebook}
-        render={(renderProps) => (
-          <FacebookLoginButton
-            onClick={renderProps.onClick}
-            disabled={renderProps.disabled}
-          />
-        )}
-      /></div>
-      
+      <div className="cell small-12">
+        <FacebookLogin
+          appId="244836170795402"
+          autoLoad={true}
+          scope="public_profile,email"
+          fields="email,first_name,last_name"
+          callback={responseFacebook}
+          render={(renderProps) => (
+            <FacebookLoginButton
+              text={
+                loginType === "new"
+                  ? "Sign up with Facebook"
+                  : "Log in with Facebook"
+              }
+              onClick={renderProps.onClick}
+              disabled={renderProps.disabled}
+            />
+          )}
+        />
+      </div>
+
       <div>
         <GoogleLogout
           clientId="659209002109-g9b7na56k40o4a8dvfs1nim8sg4e3qo5.apps.googleusercontent.com"
