@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
 import {useHistory} from "react-router-dom"
 
-function Dashboard({ userData }) {
+function Dashboard({ globalStates }) {
     const history = useHistory()
+
+    const {userData} = globalStates
 
     useEffect(() => {
         if(!userData){
