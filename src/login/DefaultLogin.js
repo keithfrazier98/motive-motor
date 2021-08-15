@@ -60,6 +60,8 @@ function DefaultLogin({
       .then(setLoading(false));
   }, [theme_id, setLoading]);
 
+  
+
   useEffect(() => {
     if(returningUserIsValidated){
       setLoggedIn(true)

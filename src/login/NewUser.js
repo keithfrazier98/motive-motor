@@ -33,7 +33,8 @@ function NewUser({
   returningUserIsValidated, 
   setReturningUserIsValidated,
   setLoggedIn,
-  resetStates
+  resetStates,
+  setSocialMediaLoginData
 }) {
   useEffect(() => {
     setNewUserProfileInfo({ ...loginFormInfo, ...newUserProfileInfo });
@@ -105,6 +106,12 @@ function NewUser({
           loginType={loginType}
           setCreateNewUser={setCreateNewUser}
           resetStates={resetStates}
+          setLoginEmailIsTaken={setLoginEmailIsTaken}
+          setRouteToLogin={setRouteToLogin}
+          setLoading={setLoading}
+          setReturningUserIsValidated={setReturningUserIsValidated}
+          setSocialMediaLoginData={setSocialMediaLoginData}
+          setLoggedIn={setLoggedIn}
         />
       </>
     </>

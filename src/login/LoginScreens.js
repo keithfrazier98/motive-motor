@@ -15,44 +15,46 @@ import validateUser from "./ValidateUser.js";
 import { createNewUserAPI } from "../utils/api.js";
 
 function LoginScreens({
-  loginFormInfo,
-  setLoginFormInfo,
-  returningUserIsValidated,
-  setReturningUserIsValidated,
-  showPassword,
-  setShowPassword,
-  passwordInputType,
-  setPasswordInputType,
-  theme_id,
-  setThemeId,
-  loading,
-  setLoading,
-  emailError,
-  setEmailError,
-  theme,
-  setTheme,
-  loginType,
-  setLoginType,
-  socialMediaLoginData,
-  setSocialMediaLoginData,
-  loggedIn,
-  setLoggedIn,
-  newUserPreferences,
-  setNewUserPreferences,
-  newUserProfileInfo,
-  setNewUserProfileInfo,
-  routeToLogin,
-  setRouteToLogin,
-  createNewUser,
-  setCreateNewUser,
-  loginEmailIsTaken,
-  setLoginEmailIsTaken,
-  userData,
-  setUserData,
-  fetchError,
-  setFetchError,
-  resetStates
+globalStates
 }) {
+
+  const {loginFormInfo,
+    setLoginFormInfo,
+    returningUserIsValidated,
+    setReturningUserIsValidated,
+    showPassword,
+    setShowPassword,
+    passwordInputType,
+    setPasswordInputType,
+    theme_id,
+    setThemeId,
+    loading,
+    setLoading,
+    emailError,
+    setEmailError,
+    theme,
+    setTheme,
+    loginType,
+    setLoginType,
+    socialMediaLoginData,
+    setSocialMediaLoginData,
+    loggedIn,
+    setLoggedIn,
+    newUserPreferences,
+    setNewUserPreferences,
+    newUserProfileInfo,
+    setNewUserProfileInfo,
+    routeToLogin,
+    setRouteToLogin,
+    createNewUser,
+    setCreateNewUser,
+    loginEmailIsTaken,
+    setLoginEmailIsTaken,
+    userData,
+    setUserData,
+    fetchError,
+    setFetchError,} = globalStates
+
   useEffect(() => {
     testConnection().then(setFetchError(false)).catch(setFetchError);
   }, []);
@@ -266,7 +268,7 @@ function LoginScreens({
                       returningUserIsValidated={returningUserIsValidated}
                       setReturningUserIsValidated={setReturningUserIsValidated}
                       setLoggedIn={setLoggedIn}
-                      resetStates={resetStates}
+                      setSocialMediaLoginData={setSocialMediaLoginData}
                       // pass to new user then pass to returning user message
                     />
                   </div>
@@ -292,3 +294,45 @@ function LoginScreens({
 }
 
 export default LoginScreens;
+
+//import props
+
+/*
+  loginFormInfo,
+  setLoginFormInfo,
+  returningUserIsValidated,
+  setReturningUserIsValidated,
+  showPassword,
+  setShowPassword,
+  passwordInputType,
+  setPasswordInputType,
+  theme_id,
+  setThemeId,
+  loading,
+  setLoading,
+  emailError,
+  setEmailError,
+  theme,
+  setTheme,
+  loginType,
+  setLoginType,
+  socialMediaLoginData,
+  setSocialMediaLoginData,
+  loggedIn,
+  setLoggedIn,
+  newUserPreferences,
+  setNewUserPreferences,
+  newUserProfileInfo,
+  setNewUserProfileInfo,
+  routeToLogin,
+  setRouteToLogin,
+  createNewUser,
+  setCreateNewUser,
+  loginEmailIsTaken,
+  setLoginEmailIsTaken,
+  userData,
+  setUserData,
+  fetchError,
+  setFetchError,
+  resetStates
+  */

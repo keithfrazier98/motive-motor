@@ -40,7 +40,7 @@ function AppStates() {
   const [showPassword, setShowPassword] = useState(false);
   const [passwordInputType, setPasswordInputType] = useState("password");
   const [socialMediaLoginData, setSocialMediaLoginData] = useState(false);
-  
+
   const [loggedIn, setLoggedIn] = useState(false);
   const [routeToLogin, setRouteToLogin] = useState(false);
   const [createNewUser, setCreateNewUser] = useState(false);
@@ -49,7 +49,57 @@ function AppStates() {
   //dashboard dependancy states (x1)
   const [userData, setUserData] = useState(false);
 
-  function resetStates() {
+  const globalStates = {
+    loginFormInfo: loginFormInfo,
+    setLoginFormInfo: setLoginFormInfo,
+    returningUserIsValidated: returningUserIsValidated,
+    setReturningUserIsValidated: setReturningUserIsValidated,
+    showPassword: showPassword,
+    setShowPassword: setShowPassword,
+    passwordInputType: passwordInputType,
+    setPasswordInputType: setPasswordInputType,
+    theme_id: theme_id,
+    setThemeId: setThemeId,
+    loading: loading,
+    setLoading: setLoading,
+    emailError: emailError,
+    setEmailError: setEmailError,
+    theme: theme,
+    setTheme: setTheme,
+    loginType: loginType,
+    setLoginType: setLoginType,
+    socialMediaLoginData: socialMediaLoginData,
+    setSocialMediaLoginData: setSocialMediaLoginData,
+    newUserProfileInfo: newUserProfileInfo,
+    setNewUserProfileInfo: setNewUserProfileInfo,
+    loggedIn: loggedIn,
+    setLoggedIn: setLoggedIn,
+    newUserPreferences: newUserPreferences,
+    setNewUserPreferences: setNewUserPreferences,
+    routeToLogin: routeToLogin,
+    setRouteToLogin: setRouteToLogin,
+    createNewUser: createNewUser,
+    setCreateNewUser: setCreateNewUser,
+    loginEmailIsTaken: loginEmailIsTaken,
+    setLoginEmailIsTaken: setLoginEmailIsTaken,
+    userData: userData,
+    setUserData: setUserData,
+    fetchError: fetchError,
+    setFetchError: setFetchError,
+  };
+
+  return (
+    <>
+      <AppRoutes globalStates={globalStates} />
+    </>
+  );
+}
+
+export default AppStates;
+
+//Reset All States
+
+/*
     setLoading(false);
     setEmailError("");
     setFetchError("");
@@ -82,13 +132,12 @@ function AppStates() {
     setLoggedIn(false)
     setRouteToLogin(false)
     setCreateNewUser(false)
-    setLoginEmailIsTaken(false)
+    setLoginEmailIsTaken(false)*/
 
-  }
-  return (
-    <>
-      <AppRoutes
-        loginFormInfo={loginFormInfo}
+// All states as props
+
+/*
+            loginFormInfo={loginFormInfo}
         setLoginFormInfo={setLoginFormInfo}
         returningUserIsValidated={returningUserIsValidated}
         setReturningUserIsValidated={setReturningUserIsValidated}
@@ -125,9 +174,4 @@ function AppStates() {
         fetchError={fetchError}
         setFetchError={setFetchError}
         resetStates={resetStates}
-      />
-    </>
-  );
-}
-
-export default AppStates;
+        */

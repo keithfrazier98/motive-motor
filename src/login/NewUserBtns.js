@@ -6,19 +6,33 @@ function NewUserBtns({
   theme,
   loginEmailIsTaken,
   emailError,
-  submitCreateNewUserAPI,
   loginType,
   setCreateNewUser,
-  resetStates
+  setLoginEmailIsTaken,
+  setRouteToLogin,
+  setLoading,
+  setReturningUserIsValidated,
+  setSocialMediaLoginData,
+  setLoggedIn
 }) {
+  const backToLogin = () => {
+    setLoading(false);
+    setEmailError("");
+    setReturningUserIsValidated(false);
+    setLoginType("existing");
+    setSocialMediaLoginData(false);
+    setLoggedIn(false);
+    setRouteToLogin(false);
+    setCreateNewUser(false);
+    setLoginEmailIsTaken(false);
+  };
+  
   const newUserBtns = (
     <>
       <button
         type="button"
         onClick={() => {
-          //setLoginType("existing");
-          //setEmailError(false);
-          resetStates()
+          backToLogin()
         }}
         className={`button ${theme.btnColor}`}
         style={{ margin: "0 10px 0 0", borderRadius: "3px" }}
@@ -27,14 +41,18 @@ function NewUserBtns({
       </button>
 
       {
-        //this conditional will turn off the submit button on SignUpWithSocialMedia sign is on
+        //this conditional will turn off the submit button when SignUpWithSocialMedia sign is on
         loginType === "new" ? (
           <button
             type="button"
             id="create_user"
             style={{ margin: "0" }}
             onClick={
-              loginEmailIsTaken || emailError ? null : () => {setCreateNewUser(true)}
+              loginEmailIsTaken || emailError
+                ? null
+                : () => {
+                    setCreateNewUser(true);
+                  }
             }
             className={`${
               loginEmailIsTaken || emailError ? "button disabled" : "button"
